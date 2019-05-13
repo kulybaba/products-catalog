@@ -89,11 +89,17 @@ class Product
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Star", mappedBy="product")
+     */
+    private $stars;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
         $this->tag = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->stars = new ArrayCollection();
     }
 
     /**
@@ -371,6 +377,47 @@ class Product
             // set the owning side to null (unless already changed)
             if ($comment->getProduct() === $this) {
                 $comment->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Star[]
+     */
+    public function getStars(): Collection
+    {
+        return $this->stars;
+    }
+
+    /**
+     * @param Star $star
+     *
+     * @return Product
+     */
+    public function addStar(Star $star): self
+    {
+        if (!$this->stars->contains($star)) {
+            $this->stars[] = $star;
+            $star->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Star $star
+     *
+     * @return Product
+     */
+    public function removeStar(Star $star): self
+    {
+        if ($this->stars->contains($star)) {
+            $this->stars->removeElement($star);
+            // set the owning side to null (unless already changed)
+            if ($star->getProduct() === $this) {
+                $star->setProduct(null);
             }
         }
 
