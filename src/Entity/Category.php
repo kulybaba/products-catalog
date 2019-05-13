@@ -37,9 +37,15 @@ class Category
      */
     private $users;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Product", mappedBy="category")
+     */
+    private $products;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     /**
@@ -123,6 +129,44 @@ class Category
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
             $user->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return Category
+     */
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return Category
+     */
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->contains($product)) {
+            $this->products->removeElement($product);
+            $product->removeCategory($this);
         }
 
         return $this;

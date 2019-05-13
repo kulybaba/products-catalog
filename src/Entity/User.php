@@ -66,9 +66,15 @@ class User implements UserInterface
      */
     private $category;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="manager")
+     */
+    private $products;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     /**
@@ -261,6 +267,47 @@ class User implements UserInterface
     {
         if ($this->category->contains($category)) {
             $this->category->removeElement($category);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return User
+     */
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setManager($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return User
+     */
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->contains($product)) {
+            $this->products->removeElement($product);
+            // set the owning side to null (unless already changed)
+            if ($product->getManager() === $this) {
+                $product->setManager(null);
+            }
         }
 
         return $this;
