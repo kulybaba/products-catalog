@@ -5,12 +5,141 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('libs/bootstrap/css/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/main.css') }}">
         {% endblock %}
     </head>
     <body>
+        {% block header %}
+            <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+                <div class="container">
+                    <span class="navbar-brand">PRODUCTS CATALOG</span>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="{{ path('app_product_list') }}">Home</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav pull-right">
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <li class="nav-item">
+                                        <a class="nav-link text-light" href="{{ path('app_product_new') }}">Admin panel</a>
+                                    </li>
+                                {% endif %}
+                                {% if is_granted('ROLE_ADMIN_MANAGER') %}
+                                    <li class="nav-item">
+                                        <a class="nav-link text-light" href="{{ path('app_product_new') }}">+</a>
+                                    </li>
+                                {% endif %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ app.user.firstName }} {{ app.user.lastName }}
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="#">Stars</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Logout</a>
+                                    </div>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" href="{{ path('app_login') }}">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" href="{{ path('app_registration') }}">Registration</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+
+
+                    </div>
+                </div>
+            </nav>
+        {% endblock %}
+
         <div class="container">
-            {% block body %}{% endblock %}
+            <div class="row">
+                <div class="col">
+                    {# {{ render(controller('App\\Controller\\DefaultController::categories')) }} #}
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-products list-group-item-action d-flex justify-content-between align-items-center">
+                            Category 1
+                            <span class="badge badge-primary badge-pill">1</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-products list-group-item-action d-flex justify-content-between align-items-center">
+                            Category 2
+                            <span class="badge badge-primary badge-pill">1</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-6">
+                    {% block body %}{% endblock %}
+                </div>
+                <div class="col">
+                    <div class="row">
+                        {# {{ render(controller('App\\Controller\\DefaultController::search')) }} #}
+                        <div class="card text-white bg-primary mb-3">
+                            <div class="card-header text-center">Searching products</div>
+                            <div>
+                                <form>
+                                    <input type="text" placeholder="Product name" class="form-control">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {# {{ render(controller('App\\Controller\\DefaultController::archive')) }} #}
+                        <div class="card text-white bg-primary mb-3">
+                            <div class="card-header text-center">
+                                Last products
+                            </div>
+                            <div class="list-group list-group-flush">
+                                <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+                                <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {# {{ render(controller('App\\Controller\\DefaultController::tags')) }} #}
+                        <div class="card text-white bg-primary mb-3" style="width: 18rem;">
+                            <div class="card-header text-center">Tags</div>
+                            <div class="text-dark bg-light">
+                                <p>Tag 1, Tag 2, Tag 3</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {# {{ render(controller('App\\Controller\\DefaultController::archive')) }} #}
+                        <div class="card text-white bg-primary mb-3">
+                            <div class="card-header text-center">Archive</div>
+                            <div class="list-group list-group-flush">
+                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    Dapibus ac facilisis in
+                                    <span class="badge badge-primary badge-pill">1</span>
+                                </a>
+                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    Dapibus ac facilisis in
+                                    <span class="badge badge-primary badge-pill">1</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        {% block footer %}
+            <nav class="navbar fixed-bottom navbar-dark bg-primary">
+                <div class="container">
+                    <span class="navbar-text text-light"><b>Developer:</b> Petro Kulybaba</span>
+                </div>
+            </nav>
+        {% endblock %}
+
         {% block javascripts %}
             <script src="{{ asset('libs/jquery/jquery-3.4.1.min.js') }}"></script>
             <script src="{{ asset('libs/bootstrap/js/bootstrap.min.js') }}"></script>

@@ -6,12 +6,33 @@
     <div class="row">
         {% if products and products|length > 0 %}
             {% for product in products %}
-                {{ product.name }}
-                <br>
-                {{ product.description }}
-                <br>
-                {{ product.manager.firstName }} {{ product.manager.lastName }}
-                <br><br>
+                <div class="card card-product mb-3 p-1">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="{{ asset('images/product/noimage.jpg') }}" class="card-img">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body p-2">
+                                <h5 class="card-title">
+                                    {{ product.name|length > 62 ? product.name|slice(0, 61) ~ '...' : product.name }}
+                                </h5>
+                                <p class="card-text">
+                                    {{ product.description|length > 160 ? product.description|slice(0, 169) ~ '...' : product.description }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="card-body text-muted p-1">
+                            <small class="text-muted"><b>Manager:</b> {{ product.manager.firstName }} {{ product.manager.lastName }}</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <small class="text-muted"><b>Color: </b></small>
+                            <span class="color-block" style="background-color: {{ product.color }};">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <small class="text-muted"><b>Count:</b> {{ product.count }}</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <small class="text-muted"><b>Price:</b> {{ product.price }} {{ product.currency }}</small>
+                                </span>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
         {% else %}
             <p>Empty!</p>
