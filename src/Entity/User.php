@@ -5,10 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"email"},  message="Email already taken")
  */
 class User implements UserInterface
 {
@@ -23,6 +26,11 @@ class User implements UserInterface
      * @var string $email
      *
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email(
+     *     message="The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
      */
     private $email;
 
@@ -44,6 +52,13 @@ class User implements UserInterface
      * @var string $firstName
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     max="20",
+     *     min="2",
+     *     maxMessage="First name must contain maximum 20 characters.",
+     *     minMessage="First name must contain minimum 2 characters."
+     * )
      */
     private $firstName;
 
@@ -51,6 +66,13 @@ class User implements UserInterface
      * @var string $lastName
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     max="20",
+     *     min="2",
+     *     maxMessage="Last name must contain maximum 20 characters.",
+     *     minMessage="Last name must contain minimum 2 characters."
+     * )
      */
     private $lastName;
 
@@ -58,6 +80,7 @@ class User implements UserInterface
      * @var string $apiToken
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $apiToken;
 
@@ -81,8 +104,20 @@ class User implements UserInterface
      */
     private $stars;
 
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     max="25",
+     *     min="8",
+     *     maxMessage="Password must contain maximum 25 characters.",
+     *     minMessage="Password must contain minimum 8 characters."
+     * )
+     */
+    private $plainPassword;
+
     public function __construct()
     {
+        $this->roles = ['ROLE_USER'];
         $this->category = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->comments = new ArrayCollection();
@@ -403,6 +438,26 @@ class User implements UserInterface
                 $star->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string $plainPassword
+     *
+     * @return User
+     */
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
