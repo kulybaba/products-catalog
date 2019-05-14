@@ -1,0 +1,11 @@
+body {
+    margin-top: 80px;
+}
+
+.card {
+    width: 18rem;
+}
+
+.list-group-item-products {
+    border-color: #007bff;
+}
