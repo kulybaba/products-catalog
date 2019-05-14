@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Form\ProductType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,35 @@ class ProductController extends AbstractController
                 $request->query->getInt('page', 1),
                 $this->getParameter('page_range')
             ),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/create")
+     */
+    public function create(Request $request)
+    {
+        $product = new Product();
+        $product->setManager($this->getUser());
+
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+
+            $this->addFlash('notice', 'Product created!');
+
+            return $this->redirectToRoute('app_product_list');
+        }
+
+        return $this->render('product/create.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 }
