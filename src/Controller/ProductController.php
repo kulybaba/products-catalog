@@ -67,7 +67,7 @@ class ProductController extends AbstractController
     /**
      * @param Request $request
      * @param Product $product
-     * 
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      *
      * @Route("/{id}/edit")
@@ -89,5 +89,23 @@ class ProductController extends AbstractController
         return $this->render('product/newEdit.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/delete")
+     */
+    public function delete(Product $product)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($product);
+        $em->flush();
+
+        $this->addFlash('notice', 'Product deleted!');
+
+        return $this->redirectToRoute('app_product_list');
     }
 }
