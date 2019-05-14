@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Products list{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {% if products and products|length > 0 %}
+            {% for product in products %}
+                {{ product.name }}
+                <br>
+                {{ product.description }}
+                <br>
+                {{ product.manager.firstName }} {{ product.manager.lastName }}
+                <br><br>
+            {% endfor %}
+        {% else %}
+            <p>Empty!</p>
+        {% endif %}
+    </div>
+    <div class="row">
+        {{ knp_pagination_render(products) }}
+    </div>
+{% endblock %}
