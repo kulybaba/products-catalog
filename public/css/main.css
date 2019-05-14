@@ -1,11 +1,25 @@
 body {
     margin-top: 80px;
+    margin-bottom: 60px;
 }
 
 .card {
     width: 18rem;
 }
 
+.card-product {
+    width: 555px;
+    border-color: #007bff;
+}
+
+.card-body-product {
+    border-color: #007bff;
+}
+
 .list-group-item-products {
     border-color: #007bff;
+}
+
+.color-block {
+    border: 1px solid #000000;
 }
