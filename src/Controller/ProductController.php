@@ -40,9 +40,9 @@ class ProductController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      *
-     * @Route("/create")
+     * @Route("/new")
      */
-    public function create(Request $request)
+    public function new(Request $request)
     {
         $product = new Product();
         $product->setManager($this->getUser());
@@ -59,7 +59,34 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('app_product_list');
         }
 
-        return $this->render('product/create.html.twig', [
+        return $this->render('product/newEdit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Product $product
+     * 
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/{id}/edit")
+     */
+    public function edit(Request $request, Product $product)
+    {
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+
+            $this->addFlash('notice', 'Product updated!');
+
+            return $this->redirectToRoute('app_product_list');
+        }
+
+        return $this->render('product/newEdit.html.twig', [
             'form' => $form->createView()
         ]);
     }
