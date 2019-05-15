@@ -15,6 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface
 {
+    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN',
+        ROLE_ADMIN_MANAGER = 'ROLE_ADMIN_MANAGER',
+        ROLE_USER = 'ROLE_USER';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

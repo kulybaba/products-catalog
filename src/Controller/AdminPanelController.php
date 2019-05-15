@@ -52,4 +52,34 @@ class AdminPanelController extends AbstractController
             ),
         ]);
     }
+
+    /**
+     * @param User $user
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/users/{id}/make-manager")
+     */
+    public function makeManager(User $user)
+    {
+        $user->setRoles([User::ROLE_ADMIN_MANAGER]);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('app_adminpanel_userslist');
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/users/{id}/make-user")
+     */
+    public function makeUser(User $user)
+    {
+        $user->setRoles([User::ROLE_USER]);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('app_adminpanel_userslist');
+    }
 }
