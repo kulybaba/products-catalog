@@ -19,8 +19,26 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-    public function getAll()
+    public function getAll(array $params = [])
     {
-        return $this->createQueryBuilder('p')->getQuery();
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'DESC');
+
+        if (isset($params['managerId'])) {
+            $qb->join('p.manager', 'm')
+                ->andWhere('m.id = :id')
+                ->setParameter('id', $params['managerId']);
+        }
+
+        return $qb->getQuery();
+    }
+
+    public function findLastProducts(int $max)
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.createdAt', 'DESC')
+            ->setMaxResults($max)
+            ->getQuery()
+            ->getResult();
     }
 }

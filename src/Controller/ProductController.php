@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Aws\S3Manager;
 use App\Entity\Product;
 use App\Form\ProductType;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,27 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProductController extends AbstractController
 {
-    /**
-     * @param Request $request
-     * @param PaginatorInterface $paginator
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @Route("")
-     */
-    public function list(Request $request, PaginatorInterface $paginator)
-    {
-        $products = $this->getDoctrine()->getRepository(Product::class)->getAll();
-
-        return $this->render('product/list.html.twig', [
-            'products' => $paginator->paginate(
-                $products,
-                $request->query->getInt('page', 1),
-                $this->getParameter('page_range')
-            ),
-        ]);
-    }
-
     /**
      * @param Product $product
      *
@@ -79,7 +57,7 @@ class ProductController extends AbstractController
 
             $this->addFlash('notice', 'Product created!');
 
-            return $this->redirectToRoute('app_product_list');
+            return $this->redirectToRoute('app_default_index');
         }
 
         return $this->render('product/newEdit.html.twig', [
@@ -106,7 +84,7 @@ class ProductController extends AbstractController
 
             $this->addFlash('notice', 'Product updated!');
 
-            return $this->redirectToRoute('app_product_list');
+            return $this->redirectToRoute('app_default_index');
         }
 
         return $this->render('product/newEdit.html.twig', [
@@ -135,7 +113,7 @@ class ProductController extends AbstractController
 
             $this->addFlash('notice', 'Product deleted!');
 
-            return $this->redirectToRoute('app_product_list');
+            return $this->redirectToRoute('app_default_index');
         } catch (Exception $e) {
             throw new \Exception($e->getMessage());
         }
