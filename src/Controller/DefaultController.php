@@ -47,7 +47,7 @@ class DefaultController extends AbstractController
         if ($user && $user->getRoles() == ['ROLE_ADMIN_MANAGER']) {
             $products = $user->getProducts();
         }
-        $products = $this->getDoctrine()->getRepository(Product::class)->findLastProducts($this->getParameter('last_products'));
+        $products = $this->getDoctrine()->getRepository(Product::class)->findLast($this->getParameter('last_products'));
 
         return $this->render('default/lastProducts.html.twig', [
             'products' => $products,
