@@ -8,7 +8,6 @@ use App\Entity\Tag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,13 +20,16 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('description', TextType::class)
+            ->add('description', TextType::class, [
+                'required' => false,
+            ])
             ->add('color', ColorType::class)
             ->add('count', IntegerType::class)
             ->add('price', NumberType::class)
             ->add('currency', TextType::class)
-            ->add('image', FileType::class, [
+            ->add('image', ImageType::class, [
                 'required' => false,
+                'label' => false,
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,

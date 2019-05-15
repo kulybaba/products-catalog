@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Aws\S3Manager;
 use App\Entity\Product;
 use App\Form\ProductType;
 use Knp\Component\Pager\PaginatorInterface;
@@ -51,12 +52,13 @@ class ProductController extends AbstractController
 
     /**
      * @param Request $request
+     * @param S3Manager $s3Manager
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      *
      * @Route("/new")
      */
-    public function new(Request $request)
+    public function new(Request $request, S3Manager $s3Manager)
     {
         $product = new Product();
         $product->setManager($this->getUser());
@@ -64,6 +66,13 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($image = $product->getImage()) {
+                $imageFile = $this->file($image->getUrl())->getFile();
+                $result = $s3Manager->uploadPicture($imageFile);
+                $product->getImage()->setUrl($result['url']);
+                $product->getImage()->setS3Key($result['key']);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
@@ -107,19 +116,28 @@ class ProductController extends AbstractController
 
     /**
      * @param Product $product
+     * @param S3Manager $s3Manager
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
+     * @throws \Exception
+     *
      * @Route("/{id}/delete")
      */
-    public function delete(Product $product)
+    public function delete(Product $product, S3Manager $s3Manager)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($product);
-        $em->flush();
+        try {
+            $s3Manager->deletePicture($product->getImage()->getS3Key());
 
-        $this->addFlash('notice', 'Product deleted!');
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($product);
+            $em->flush();
 
-        return $this->redirectToRoute('app_product_list');
+            $this->addFlash('notice', 'Product deleted!');
+
+            return $this->redirectToRoute('app_product_list');
+        } catch (Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 }
