@@ -36,6 +36,20 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @param Product $product
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/{id}/view")
+     */
+    public function view(Product $product)
+    {
+        return $this->render('product/view.html.twig', [
+            'product' => $product
+        ]);
+    }
+
+    /**
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
