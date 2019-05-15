@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Product;
+use App\Entity\User;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +22,14 @@ class DefaultController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator)
     {
-        $products = $this->getDoctrine()->getRepository(Product::class)->getAll();
+        $params = [];
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($user && $user->getRoles() == ['ROLE_ADMIN_MANAGER']) {
+            $params['managerId'] = $user->getId();
+        }
+
+        $products = $this->getDoctrine()->getRepository(Product::class)->getAll($params);
 
         return $this->render('product/list.html.twig', [
             'products' => $paginator->paginate(
@@ -33,10 +42,29 @@ class DefaultController extends AbstractController
 
     public function lastProducts()
     {
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($user && $user->getRoles() == ['ROLE_ADMIN_MANAGER']) {
+            $products = $user->getProducts();
+        }
         $products = $this->getDoctrine()->getRepository(Product::class)->findLastProducts($this->getParameter('last_products'));
 
         return $this->render('default/lastProducts.html.twig', [
             'products' => $products,
+        ]);
+    }
+
+    public function categoriesList()
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($user && $user->getRoles() == ['ROLE_ADMIN_MANAGER']) {
+            $categories = $user->getCategory();
+        }
+        $categories = $this->getDoctrine()->getRepository(Category::class)->findAll();
+
+        return $this->render('default/categoriesList.html.twig', [
+            'categories' => $categories,
         ]);
     }
 }

@@ -65,17 +65,7 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    {# {{ render(controller('App\\Controller\\DefaultController::categories')) }} #}
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-products list-group-item-action d-flex justify-content-between align-items-center">
-                            Category 1
-                            <span class="badge badge-primary badge-pill">1</span>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-products list-group-item-action d-flex justify-content-between align-items-center">
-                            Category 2
-                            <span class="badge badge-primary badge-pill">1</span>
-                        </a>
-                    </div>
+                    {{ render(controller('App\\Controller\\DefaultController::categoriesList')) }}
                 </div>
                 <div class="col-6">
                     {% block body %}{% endblock %}
@@ -98,31 +88,6 @@
                                 Last products
                             </div>
                             {{ render(controller('App\\Controller\\DefaultController::lastProducts')) }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        {# {{ render(controller('App\\Controller\\DefaultController::tags')) }} #}
-                        <div class="card text-white bg-primary mb-3" style="width: 18rem;">
-                            <div class="card-header text-center">Tags</div>
-                            <div class="text-dark bg-light">
-                                <p>Tag 1, Tag 2, Tag 3</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        {# {{ render(controller('App\\Controller\\DefaultController::archive')) }} #}
-                        <div class="card text-white bg-primary mb-3">
-                            <div class="card-header text-center">Archive</div>
-                            <div class="list-group list-group-flush">
-                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                    Dapibus ac facilisis in
-                                    <span class="badge badge-primary badge-pill">1</span>
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                    Dapibus ac facilisis in
-                                    <span class="badge badge-primary badge-pill">1</span>
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
