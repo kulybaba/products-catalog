@@ -116,19 +116,28 @@ class ProductController extends AbstractController
 
     /**
      * @param Product $product
+     * @param S3Manager $s3Manager
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
+     * @throws \Exception
+     *
      * @Route("/{id}/delete")
      */
-    public function delete(Product $product)
+    public function delete(Product $product, S3Manager $s3Manager)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($product);
-        $em->flush();
+        try {
+            $s3Manager->deletePicture($product->getImage()->getS3Key());
 
-        $this->addFlash('notice', 'Product deleted!');
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($product);
+            $em->flush();
 
-        return $this->redirectToRoute('app_product_list');
+            $this->addFlash('notice', 'Product deleted!');
+
+            return $this->redirectToRoute('app_product_list');
+        } catch (Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 }
