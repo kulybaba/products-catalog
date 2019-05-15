@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\User;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -14,6 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminPanelController extends AbstractController
 {
     /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @Route("")
      */
     public function index()
@@ -25,6 +29,27 @@ class AdminPanelController extends AbstractController
             'lastUsers' => $this->getDoctrine()->getRepository(User::class)->findLast($this->getParameter('last_admin')),
             'lastCategories' => $this->getDoctrine()->getRepository(Category::class)->findLast($this->getParameter('last_admin')),
             'lastProducts' => $this->getDoctrine()->getRepository(Product::class)->findLast($this->getParameter('last_admin')),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/users")
+     */
+    public function usersList(Request $request, PaginatorInterface $paginator)
+    {
+        $users = $this->getDoctrine()->getRepository(User::class)->getAll();
+
+        return $this->render('admin_panel/usersList.html.twig', [
+            'users' => $paginator->paginate(
+                $users,
+                $request->query->getInt('page', 1),
+                $this->getParameter('page_range')
+            ),
         ]);
     }
 }
