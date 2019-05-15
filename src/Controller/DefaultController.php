@@ -30,4 +30,13 @@ class DefaultController extends AbstractController
             ),
         ]);
     }
+
+    public function lastProducts()
+    {
+        $products = $this->getDoctrine()->getRepository(Product::class)->findLastProducts($this->getParameter('last_products'));
+
+        return $this->render('default/lastProducts.html.twig', [
+            'products' => $products,
+        ]);
+    }
 }
