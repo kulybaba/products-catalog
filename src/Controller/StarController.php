@@ -4,19 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Entity\Star;
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/product")
- */
 class StarController extends AbstractController
 {
     /**
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      *
-     * @Route("/star")
+     * @Route("/product/star")
      */
     public function star()
     {
@@ -42,7 +40,7 @@ class StarController extends AbstractController
     /**
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      *
-     * @Route("/unstar")
+     * @Route("/product/unstar")
      */
     public function unstar()
     {
@@ -58,5 +56,20 @@ class StarController extends AbstractController
                 'starsCount' => $this->getDoctrine()->getRepository(Product::class)->find($id)->getStars()->count(),
             ]);
         }
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/stars")
+     */
+    public function starsList()
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return $this->render('star/list.html.twig', [
+            'stars' => $user->getStars(),
+        ]);
     }
 }
