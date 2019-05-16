@@ -18,10 +18,15 @@ class LoginType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'attr' => [
+                    'class' => 'form-control form-group',
                     'value' => $lastUsername,
-                ]
+                ],
             ])
-            ->add('password', PasswordType::class);
+            ->add('password', PasswordType::class, [
+                'attr' => [
+                    'class' => 'form-control form-group',
+                ],
+            ]);
     }
 
     public function getBlockPrefix()
