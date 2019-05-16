@@ -25,10 +25,11 @@
                         <p class="m-0">{{ comment.text }}</p>
                         <p class="m-0">
                             <a href="{{ path('app_comment_edit', {'id': comment.id}) }}" class="btn btn-secondary btn-sm comment-btn-style"><i class="fas fa-pen"></i></a>
-                            <a href="#" class="btn btn-secondary btn-sm comment-btn-style"><i class="fas fa-times"></i></a>
+                            <button type="button" data-toggle="modal" data-target="#deleteModal{{ comment.id }}" class="btn btn-secondary btn-sm comment-btn-style"><i class="fas fa-times"></i></button>
                         </p>
                     </div>
                 </div>
+                {{ include('admin_panel/deleteModal.html.twig', {'id': comment.id, 'title': 'comment', 'route': 'app_comment_delete'}) }}
             {% endfor %}
         {% else %}
             <p>Not comments!</p>

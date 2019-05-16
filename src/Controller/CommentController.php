@@ -43,4 +43,24 @@ class CommentController extends AbstractController
             'productId' => $comment->getProduct()->getId(),
         ]);
     }
+
+    /**
+     * @param Comment $comment
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/delete")
+     */
+    public function delete(Comment $comment)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($comment);
+        $em->flush();
+
+        $this->addFlash('notice', 'Comment deleted!');
+
+        return $this->redirectToRoute('app_product_view', [
+            'id' => $comment->getProduct()->getId(),
+        ]);
+    }
 }
