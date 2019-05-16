@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Aws\S3Manager;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Form\AssignCategoryType;
+use App\Form\ProductType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -128,6 +130,43 @@ class AdminPanelController extends AbstractController
                 $request->query->getInt('page', 1),
                 $this->getParameter('page_range')
             ),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @param S3Manager $s3Manager
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/products/new")
+     */
+    public function newProduct(Request $request, S3Manager $s3Manager)
+    {
+        $product = new Product();
+        $product->setManager($this->getUser());
+
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($image = $product->getImage()) {
+                $imageFile = $this->file($image->getUrl())->getFile();
+                $result = $s3Manager->uploadPicture($imageFile);
+                $product->getImage()->setUrl($result['url']);
+                $product->getImage()->setS3Key($result['key']);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+
+            $this->addFlash('notice', 'Product created!');
+
+            return $this->redirectToRoute('app_adminpanel_productslist');
+        }
+
+        return $this->render('product/newEdit.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }

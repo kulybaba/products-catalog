@@ -5,7 +5,7 @@
 {% block body %}
     <div class="row">
         <div>
-            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
+            <a href="{{ path('app_adminpanel_newproduct') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
         </div>
         <br><br>
         {% if products and products|length > 0 %}
