@@ -28,6 +28,7 @@
                                 {% endif %}
                                 {% if user.roles == ['ROLE_ADMIN_MANAGER'] %}
                                     <button type="button" data-toggle="modal" data-target="#makeUserModal{{ user.id }}" class="btn btn-danger btn-sm"><i class="fas fa-user-cog"></i></button>
+                                    <br><br>
                                     <a href="{{ path('app_adminpanel_assigncategories', {'id': user.id}) }}" class="btn btn-success btn-sm"><i class="fas fa-th-list"></i></a>
                                 {% endif %}
                             </td>

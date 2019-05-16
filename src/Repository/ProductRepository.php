@@ -22,12 +22,18 @@ class ProductRepository extends ServiceEntityRepository
     public function getAll(array $params = [])
     {
         $qb = $this->createQueryBuilder('p')
+            ->select('p')
             ->orderBy('p.createdAt', 'DESC');
 
-        if (isset($params['managerId'])) {
-            $qb->join('p.manager', 'm')
-                ->andWhere('m.id = :id')
-                ->setParameter('id', $params['managerId']);
+        if (isset($params['manager'])) {
+            $qb->andWhere('p.manager = :manager')
+                ->setParameter('manager', $params['manager']);
+        }
+
+        if (isset($params['categoryId'])) {
+            $qb->join('p.category', 'c')
+                ->andWhere('c.id = :categoryId')
+                ->setParameter('categoryId', $params['categoryId']);
         }
 
         return $qb->getQuery();

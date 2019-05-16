@@ -6,24 +6,34 @@
     <div class="row">
         {% if product and product|length > 0 %}
             <div class="card card-product">
-                <div class="card-header text-center bg-transparent"><b>{{ product.name }}</b></div>
+                <div class="card-header bg-transparent">
+                    <div class="row">
+                        <div class="col-md-11">
+                            <b>{{ product.name }}</b>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="{{ path('app_product_edit', {'id': product.id}) }}"><i class="fas fa-marker"></i></a>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body p-1">
                     {% if product.image == null %}
                         <img src="{{ asset('images/product/noimage.jpg') }}" width="545">
                     {% else %}
                         <img src="{{ product.image.url }}" width="545">
                     {% endif %}
-                    <p class="card-text p-2">{{ product.description }}</p>
-                    <hr class="p-0 m-2">
-                    <p class="card-text p-2">
-                        {% for category in product.category %}
-                            <a href="#"><i class="fas fa-th-list"></i>&nbsp;{{ category.name }}</a>&nbsp;&nbsp;&nbsp;
+                    <p class="card-text pl-2 pt-3">{{ product.description }}</p>
+                    <hr class="p-0 m-0">
+                    <p class="card-text pt-3 pb-0 pl-2 categories-tags-font-size">
+                        {% for tag in product.tag %}
+                            <i class="fas fa-tag"></i>&nbsp;{{ tag.text }}&nbsp;&nbsp;
                         {% endfor %}
                     </p>
-                    <hr class="p-0 m-2">
-                    <p class="card-text p-2">
-                        {% for tag in product.tag %}
-                            <a href="#"><i class="fas fa-tag"></i>&nbsp;{{ tag.text }}</a>&nbsp;&nbsp;&nbsp;
+                    <hr class="p-0 m-0">
+                    <p class="card-text pl-2 pt-1 categories-tags-font-size">
+                        <b>Categories:</b>
+                        {% for category in product.category %}
+                            {{ category.name }},
                         {% endfor %}
                     </p>
                 </div>
@@ -37,7 +47,7 @@
                 </div>
             </div>
         {% else %}
-            <p>Empty!</p>
+            <p>Not found!</p>
         {% endif %}
     </div>
 {% endblock %}

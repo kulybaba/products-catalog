@@ -35,7 +35,7 @@
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                 {% if is_granted('ROLE_ADMIN_MANAGER') %}
                                     <li class="nav-item">
-                                        <a class="nav-link text-light" href="{{ path('app_product_new') }}">+</a>
+                                        <a class="nav-link text-light" href="{{ path('app_product_new') }}"><i class="fas fa-plus-circle"></i></a>
                                     </li>
                                 {% endif %}
                                 <li class="nav-item dropdown">
