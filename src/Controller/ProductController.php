@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Aws\S3Manager;
+use App\Entity\Comment;
 use App\Entity\Product;
+use App\Form\CommentType;
 use App\Form\ProductType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,10 +24,36 @@ class ProductController extends AbstractController
      *
      * @Route("/{id}/view")
      */
-    public function view(Product $product)
+    public function view(Request $request, PaginatorInterface $paginator, Product $product)
     {
+        $comment = new Comment();
+        $comment->setUser($this->getUser());
+        $comment->setProduct($product);
+
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+
+            $this->addFlash('notice', 'Comment created!');
+
+            return $this->redirectToRoute('app_product_view', [
+                'id' => $product->getId(),
+            ]);
+        }
+
+        $comments = $this->getDoctrine()->getRepository(Comment::class)->getAll(['product' => $product]);
+
         return $this->render('product/view.html.twig', [
-            'product' => $product
+            'product' => $product,
+            'comments' => $paginator->paginate(
+                $comments,
+                $request->query->getInt('page', 1),
+                $this->getParameter('page_range')
+            ),
+            'form' => $form->createView(),
         ]);
     }
 

@@ -36,3 +36,15 @@ table {
 .search-form {
     width: 700px;
 }
+
+.comments-font-size {
+    font-size: 15px;
+}
+
+.comment-btn-style {
+    padding-top: 1px;
+    padding-left: 4px;
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+}
