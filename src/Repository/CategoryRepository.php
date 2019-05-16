@@ -22,7 +22,7 @@ class CategoryRepository extends ServiceEntityRepository
     public function getAll()
     {
         return $this->createQueryBuilder('c')
-            ->orderBy('c.id', 'DESC')
+            ->orderBy('c.position')
             ->getQuery();
     }
 

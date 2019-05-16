@@ -305,4 +305,22 @@ class AdminPanelController extends AbstractController
             'title' => 'Edit',
         ]);
     }
+
+    /**
+     * @param Category $category
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/categories/{id}/delete")
+     */
+    public function deleteCategory(Category $category)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($category);
+        $em->flush();
+
+        $this->addFlash('notice', 'Category deleted!');
+
+        return $this->redirectToRoute('app_adminpanel_categorieslist');
+    }
 }
