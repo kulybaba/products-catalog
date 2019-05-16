@@ -24,7 +24,7 @@
                         <p class="comments-font-size m-0"><b>{{ comment.user.firstName }} {{ comment.user.lastName }}</b> ({{ comment.createdAt|date }})</p>
                         <p class="m-0">{{ comment.text }}</p>
                         <p class="m-0">
-                            <a href="#" class="btn btn-secondary btn-sm comment-btn-style"><i class="fas fa-pen"></i></a>
+                            <a href="{{ path('app_comment_edit', {'id': comment.id}) }}" class="btn btn-secondary btn-sm comment-btn-style"><i class="fas fa-pen"></i></a>
                             <a href="#" class="btn btn-secondary btn-sm comment-btn-style"><i class="fas fa-times"></i></a>
                         </p>
                     </div>

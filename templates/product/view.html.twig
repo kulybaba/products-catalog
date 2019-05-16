@@ -44,7 +44,7 @@
                     <small class="text-muted"><i class="fas fa-palette"></i>&nbsp;<span class="color-block" style="background-color: {{ product.color }};">&nbsp;&nbsp;&nbsp;&nbsp;</span></small>&nbsp;&nbsp;&nbsp;&nbsp;
                     <small class="text-muted"><i class="fas fa-warehouse"></i>&nbsp;{{ product.count }}</small>&nbsp;&nbsp;&nbsp;&nbsp;
                     <small class="text-muted"><i class="fas fa-money-bill-wave"></i>&nbsp;{{ product.price }} {{ product.currency }}</small>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <small class="text-muted"><i class="fas fa-user"></i>&nbsp;{{ product.manager.firstName }} {{ product.manager.lastName }}</small>
+                    <small class="text-muted float-right"><i class="fas fa-user"></i>&nbsp;{{ product.manager.firstName }} {{ product.manager.lastName }}</small>
                 </div>
             </div>
             {{ include('comment/list.html.twig') }}
