@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -25,6 +26,7 @@ class Product
      * @var string $name
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -39,6 +41,7 @@ class Product
      * @var string $color
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $color;
 
@@ -46,6 +49,7 @@ class Product
      * @var integer $count
      *
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private $count;
 
@@ -53,6 +57,7 @@ class Product
      * @var integer $price
      *
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private $price;
 
@@ -60,6 +65,7 @@ class Product
      * @var string $currency
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $currency;
 
@@ -70,6 +76,7 @@ class Product
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="products")
+     * @Assert\NotBlank()
      */
     private $category;
 

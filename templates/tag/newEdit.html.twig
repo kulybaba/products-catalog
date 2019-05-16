@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }} tag{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <a href="{{ path('app_adminpanel_tagslist') }}" class="btn btn-secondary btn-sm">Back</a>
+        <button class="btn btn-success btn-sm" type="submit">{{ title }}</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

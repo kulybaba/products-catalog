@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Form\AssignCategoryType;
 use App\Form\CategoryType;
 use App\Form\ProductType;
+use App\Form\TagType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -345,6 +346,35 @@ class AdminPanelController extends AbstractController
                 $request->query->getInt('page', 1),
                 $this->getParameter('page_range')
             ),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/tags/new")
+     */
+    public function newTag(Request $request)
+    {
+        $tag = new Tag();
+
+        $form = $this->createForm(TagType::class, $tag);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($tag);
+            $em->flush();
+
+            $this->addFlash('notice', 'Tag created!');
+
+            return $this->redirectToRoute('app_adminpanel_tagslist');
+        }
+
+        return $this->render('tag/newEdit.html.twig', [
+            'form' => $form->createView(),
+            'title' => 'Create'
         ]);
     }
 }
