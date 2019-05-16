@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Aws\S3Manager;
 use App\Entity\Comment;
 use App\Entity\Product;
+use App\Entity\Star;
 use App\Form\CommentType;
 use App\Form\ProductType;
 use Knp\Component\Pager\PaginatorInterface;
@@ -26,6 +27,12 @@ class ProductController extends AbstractController
      */
     public function view(Request $request, PaginatorInterface $paginator, Product $product)
     {
+        $star = null;
+
+        if ($user = $this->getUser()) {
+            $star = $this->getDoctrine()->getRepository(Star::class)->findOneBy(['product' => $product->getId(), 'user' => $user->getId()]);
+        }
+
         $comment = new Comment();
         $comment->setUser($this->getUser());
         $comment->setProduct($product);
@@ -54,6 +61,7 @@ class ProductController extends AbstractController
                 $this->getParameter('page_range')
             ),
             'form' => $form->createView(),
+            'star' => $star,
         ]);
     }
 

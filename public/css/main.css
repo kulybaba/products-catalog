@@ -3,6 +3,10 @@ body {
     margin-bottom: 80px;
 }
 
+.display-none {
+    display: none;
+}
+
 .card {
     width: 18rem;
 }

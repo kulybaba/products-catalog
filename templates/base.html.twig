@@ -44,7 +44,7 @@
                                         {{ app.user.firstName }} {{ app.user.lastName }}
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="#">Stars</a>
+                                        <a class="dropdown-item" href="{{ path('app_star_starslist') }}">Stars</a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
                                     </div>
@@ -97,6 +97,7 @@
         {% block javascripts %}
             <script src="{{ asset('libs/jquery/jquery-3.4.1.min.js') }}"></script>
             <script src="{{ asset('libs/bootstrap/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('js/common.js') }}"></script>
         {% endblock %}
     </body>
 </html>

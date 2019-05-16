@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stars{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {% if stars is defined %}
+            {% for star in stars %}
+                <div class="card card-product mb-3">
+                    <div class="card-body p-3">
+                        <div class="row">
+                            <div class="col">
+                                <a href="{{ path('app_product_view', {'id': star.product.id}) }}"><h5 class="m-0">{{ star.product.name }}</h5></a>
+                                <br>
+                                <small class="text-muted"><i class="fas fa-user"></i>&nbsp;{{ star.product.manager.firstName }} {{ star.product.manager.lastName }}</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <small class="text-muted"><i class="fas fa-star"></i>&nbsp;{{ star.product.stars.count }}</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <small class="text-muted"><i class="fas fa-comments"></i>&nbsp;{{ star.product.comments.count }}</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <small class="text-muted"><i class="fas fa-tags"></i>&nbsp;{{ star.product.tag.count }}</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <small class="text-muted"><i class="fas fa-th-list"></i></i>&nbsp;{{ star.product.category.count }}</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <small class="text-muted"><i class="fas fa-warehouse"></i>&nbsp;{{ star.product.count }}</small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <small class="text-muted"><i class="fas fa-palette"></i>&nbsp;<span class="color-block" style="background-color: {{ star.product.color }};">&nbsp;&nbsp;&nbsp;&nbsp;</span></small>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <small class="text-muted"><i class="fas fa-money-bill-wave"></i>&nbsp;{{ star.product.price }} {{ star.product.currency }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Empty!</p>
+        {% endif %}
+    </div>
+{% endblock %}
