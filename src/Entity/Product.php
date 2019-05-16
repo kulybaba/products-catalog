@@ -92,12 +92,12 @@ class Product
     private $tag;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="product", cascade={"persist", "remove"})
      */
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Star", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="App\Entity\Star", mappedBy="product", cascade={"persist", "remove"})
      */
     private $stars;
 
