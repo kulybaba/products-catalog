@@ -20,7 +20,7 @@ class AssignCategoryType extends AbstractType
                 'multiple' => true,
                 'label' => false,
                 'attr' => [
-                    'class' => 'multi-selector form-control',
+                    'class' => 'multi-selector form-control form-group',
                 ],
                 'required' => false,
             ]);
