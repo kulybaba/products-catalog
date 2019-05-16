@@ -109,4 +109,25 @@ class AdminPanelController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/products")
+     */
+    public function productsList(Request $request, PaginatorInterface $paginator)
+    {
+        $products = $this->getDoctrine()->getRepository(Product::class)->getAll();
+
+        return $this->render('admin_panel/productsList.html.twig', [
+            'products' => $paginator->paginate(
+                $products,
+                $request->query->getInt('page', 1),
+                $this->getParameter('page_range')
+            ),
+        ]);
+    }
 }

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Products{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div>
+            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
+        </div>
+        <br><br>
+        {% if products and products|length > 0 %}
+            <table class="table table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Manager</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Color</th>
+                    <th scope="col">Count</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <th scope="row">{{ product.id }}</th>
+                            <td>{{ product.manager.firstName }} {{ product.manager.lastName }}</td>
+                            <td>{{ product.name|length > 40 ? product.name|slice(0, 39) ~ '...' : product.name }}</td>
+                            <td><small class="text-muted"><span class="color-block" style="background-color: {{ product.color }};">&nbsp;&nbsp;&nbsp;&nbsp;</span></small></td>
+                            <td>{{ product.count }}</td>
+                            <td>{{ product.price }} {{ product.currency }}</td>
+                            <td>
+                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-marker"></i></a>
+                                <br><br>
+                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Empty!</p>
+        {% endif %}
+    </div>
+    <div class="row">
+        {{ knp_pagination_render(products) }}
+    </div>
+{% endblock %}
