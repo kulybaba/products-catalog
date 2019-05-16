@@ -33,9 +33,10 @@
                             <td>
                                 <a href="{{ path('app_adminpanel_editproduct', {'id': product.id}) }}" class="btn btn-primary btn-sm"><i class="fas fa-marker"></i></a>
                                 <br><br>
-                                <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+                                <button type="button" data-toggle="modal" data-target="#deleteModal{{ product.id }}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
+                        {{ include('admin_panel/deleteModal.html.twig', {'id': product.id, 'title': 'product'}) }}
                     {% endfor %}
                 </tbody>
             </table>

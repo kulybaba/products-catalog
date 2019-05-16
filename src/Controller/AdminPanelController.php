@@ -196,4 +196,33 @@ class AdminPanelController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @param Product $product
+     * @param S3Manager $s3Manager
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws \Exception
+     *
+     * @Route("/products/{id}/delete")
+     */
+    public function deleteProduct(Product $product, S3Manager $s3Manager)
+    {
+        try {
+            if ($product->getImage()) {
+                $s3Manager->deletePicture($product->getImage()->getS3Key());
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($product);
+            $em->flush();
+
+            $this->addFlash('notice', 'Product deleted!');
+
+            return $this->redirectToRoute('app_adminpanel_productslist');
+        } catch (Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
 }

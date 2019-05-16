@@ -105,7 +105,9 @@ class ProductController extends AbstractController
     public function delete(Product $product, S3Manager $s3Manager)
     {
         try {
-            $s3Manager->deletePicture($product->getImage()->getS3Key());
+            if ($product->getImage()) {
+                $s3Manager->deletePicture($product->getImage()->getS3Key());
+            }
 
             $em = $this->getDoctrine()->getManager();
             $em->remove($product);
