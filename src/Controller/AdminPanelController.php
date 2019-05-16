@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Aws\S3Manager;
 use App\Entity\Category;
 use App\Entity\Product;
+use App\Entity\Tag;
 use App\Entity\User;
 use App\Form\AssignCategoryType;
 use App\Form\CategoryType;
@@ -26,12 +27,14 @@ class AdminPanelController extends AbstractController
      */
     public function index()
     {
-        return $this->render('admin_panel/index.html.twig', [
+        return $this->render('admin_panel/dashboard.html.twig', [
             'usersCount' => count($this->getDoctrine()->getRepository(User::class)->findAll()),
             'productsCount' => count($this->getDoctrine()->getRepository(Product::class)->findAll()),
             'categoriesCount' => count($this->getDoctrine()->getRepository(Category::class)->findAll()),
+            'tagsCount' => count($this->getDoctrine()->getRepository(Tag::class)->findAll()),
             'lastUsers' => $this->getDoctrine()->getRepository(User::class)->findLast($this->getParameter('last_admin')),
             'lastCategories' => $this->getDoctrine()->getRepository(Category::class)->findLast($this->getParameter('last_admin')),
+            'lastTags' => $this->getDoctrine()->getRepository(Tag::class)->findLast($this->getParameter('last_admin')),
             'lastProducts' => $this->getDoctrine()->getRepository(Product::class)->findLast($this->getParameter('last_admin')),
         ]);
     }
