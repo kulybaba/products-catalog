@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\User;
+use App\Form\AssignCategoryType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -78,8 +79,34 @@ class AdminPanelController extends AbstractController
     public function makeUser(User $user)
     {
         $user->setRoles([User::ROLE_USER]);
+        $user->getCategory()->clear();
         $this->getDoctrine()->getManager()->flush();
 
         return $this->redirectToRoute('app_adminpanel_userslist');
+    }
+
+    /**
+     * @param Request $request
+     * @param User $user
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/users/{id}/assign-categories")
+     */
+    public function assignCategories(Request $request, User $user)
+    {
+        $form = $this->createForm(AssignCategoryType::class, $user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('app_adminpanel_userslist');
+        }
+
+        return $this->render('admin_panel/assignCategories.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

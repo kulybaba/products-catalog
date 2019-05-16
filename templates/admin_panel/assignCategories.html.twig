@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Assign categories{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <a href="{{ path('app_adminpanel_userslist') }}" class="btn btn-secondary btn-sm">Back</a>
+        <button class="btn btn-success btn-sm" type="submit">Assign</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

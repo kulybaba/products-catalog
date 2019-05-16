@@ -89,6 +89,7 @@ class User implements UserInterface
     private $apiToken;
 
     /**
+     * @Assert\NotBlank(groups={"assign_categories"})
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="users")
      */
     private $category;

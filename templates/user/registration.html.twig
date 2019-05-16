@@ -6,8 +6,8 @@
     <div class="row">
         {{ form_start(form) }}
         {{ form_widget(form) }}
-        <a href="#" class="btn btn-secondary">Back</a>
-        <button class="btn btn-success" type="submit">Registration</button>
+        <a href="{{ path('app_default_index') }}" class="btn btn-secondary btn-sm">Back</a>
+        <button class="btn btn-success btn-sm" type="submit">Registration</button>
         {{ form_end(form) }}
     </div>
 {% endblock %}

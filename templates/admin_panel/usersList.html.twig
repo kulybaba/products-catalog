@@ -6,72 +6,36 @@
     <div class="row">
         {% if users and users|length > 0 %}
             <table class="table table-hover">
-            <thead class="thead-light">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Role</th>
-                <th scope="col">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                    <tr>
-                        <th scope="row">{{ user.id }}</th>
-                        <td>{{ user.firstName }} {{ user.lastName }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.roles[0] }}</td>
-                        <td>
-                            {% if user.roles == ['ROLE_USER'] %}
-                                <button type="button" data-toggle="modal" data-target="#makeManagerModal" class="btn btn-primary btn-sm"><i class="fas fa-user-cog"></i></button>
-                            {% endif %}
-                            {% if user.roles == ['ROLE_ADMIN_MANAGER'] %}
-                                <button type="button" data-toggle="modal" data-target="#makeUserModal" class="btn btn-danger btn-sm"><i class="fas fa-user-cog"></i></button>
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-th-list"></i></a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    <div class="modal fade" id="makeUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Make user?</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Do you really want to change the user role on ROLE_USER?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <a href="{{ path('app_adminpanel_makeuser', {'id': user.id}) }}" class="btn btn-primary">Yes</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="makeManagerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Make manager?</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Do you really want to change the user role on ROLE_ADMIN_MANAGER?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <a href="{{ path('app_adminpanel_makemanager', {'id': user.id}) }}" class="btn btn-primary">Yes</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </tbody>
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <th scope="row">{{ user.id }}</th>
+                            <td>{{ user.firstName }} {{ user.lastName }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.roles[0] }}</td>
+                            <td>
+                                {% if user.roles == ['ROLE_USER'] %}
+                                    <button type="button" data-toggle="modal" data-target="#makeManagerModal{{ user.id }}" class="btn btn-primary btn-sm"><i class="fas fa-user-cog"></i></button>
+                                {% endif %}
+                                {% if user.roles == ['ROLE_ADMIN_MANAGER'] %}
+                                    <button type="button" data-toggle="modal" data-target="#makeUserModal{{ user.id }}" class="btn btn-danger btn-sm"><i class="fas fa-user-cog"></i></button>
+                                    <a href="{{ path('app_adminpanel_assigncategories', {'id': user.id}) }}" class="btn btn-success btn-sm"><i class="fas fa-th-list"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {{ include('admin_panel/makeManagerModal.html.twig', {'id': user.id}) }}
+                        {{ include('admin_panel/makeUserModal.html.twig', {'id': user.id}) }}
+                    {% endfor %}
+                </tbody>
             </table>
         {% else %}
             <p>Empty!</p>
