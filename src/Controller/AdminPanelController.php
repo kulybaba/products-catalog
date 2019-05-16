@@ -225,4 +225,25 @@ class AdminPanelController extends AbstractController
             throw new \Exception($e->getMessage());
         }
     }
+
+    /**
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/categories")
+     */
+    public function categoriesList(Request $request, PaginatorInterface $paginator)
+    {
+        $categories = $this->getDoctrine()->getRepository(Category::class)->getAll();
+
+        return $this->render('admin_panel/categoriesList.html.twig', [
+            'categories' => $paginator->paginate(
+                $categories,
+                $request->query->getInt('page', 1),
+                $this->getParameter('page_range')
+            ),
+        ]);
+    }
 }

@@ -27,7 +27,7 @@
                             <th scope="row">{{ product.id }}</th>
                             <td>{{ product.manager.firstName }} {{ product.manager.lastName }}</td>
                             <td>{{ product.name|length > 40 ? product.name|slice(0, 39) ~ '...' : product.name }}</td>
-                            <td><small class="text-muted"><span class="color-block" style="background-color: {{ product.color }};">&nbsp;&nbsp;&nbsp;&nbsp;</span></small></td>
+                            <td><span class="color-block" style="background-color: {{ product.color }};">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
                             <td>{{ product.count }}</td>
                             <td>{{ product.price }} {{ product.currency }}</td>
                             <td>
@@ -36,7 +36,7 @@
                                 <button type="button" data-toggle="modal" data-target="#deleteModal{{ product.id }}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
-                        {{ include('admin_panel/deleteModal.html.twig', {'id': product.id, 'title': 'product'}) }}
+                        {{ include('admin_panel/deleteModal.html.twig', {'id': product.id, 'title': 'product', 'route': 'app_adminpanel_deleteproduct'}) }}
                     {% endfor %}
                 </tbody>
             </table>

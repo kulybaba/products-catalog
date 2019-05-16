@@ -19,6 +19,13 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
+    public function getAll()
+    {
+        return $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'DESC')
+            ->getQuery();
+    }
+
     public function findLast(int $max)
     {
         return $this->createQueryBuilder('c')

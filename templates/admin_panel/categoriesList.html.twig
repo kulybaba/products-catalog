@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categories{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div>
+            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
+        </div>
+        <br><br>
+        {% if categories and categories|length > 0 %}
+            <table class="table table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Position</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <th scope="row">{{ category.id }}</th>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.position }}</td>
+                            <td>
+                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-marker"></i></a>
+                                <button type="button" data-toggle="modal" data-target="#deleteModal{{ category.id }}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        {{ include('admin_panel/deleteModal.html.twig', {'id': category.id, 'title': 'category', 'route': 'app_adminpanel_categorieslist'}) }}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Empty!</p>
+        {% endif %}
+    </div>
+    <div class="row">
+        {{ knp_pagination_render(categories) }}
+    </div>
+{% endblock %}
