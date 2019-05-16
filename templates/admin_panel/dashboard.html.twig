@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-sm-3 text-left">
+        <div class="col-sm-3 text-center">
             <a href="{{ path('app_adminpanel_userslist') }}" class="btn btn-primary">
                 Users
                 <br>
@@ -18,15 +18,15 @@
                 <span class="badge badge-light">{{ productsCount }}</span>
             </a>
         </div>
-        <div class="col-sm-3 text-right">
+        <div class="col-sm-3 text-center">
             <a href="{{ path('app_adminpanel_categorieslist') }}" class="btn btn-primary">
                 Categories
                 <br>
                 <span class="badge badge-light">{{ categoriesCount }}</span>
             </a>
         </div>
-        <div class="col-sm-3 text-right">
-            <a href="#" class="btn btn-primary">
+        <div class="col-sm-3 text-center">
+            <a href="{{ path('app_adminpanel_tagslist') }}" class="btn btn-primary">
                 Tags
                 <br>
                 <span class="badge badge-light">{{ tagsCount }}</span>

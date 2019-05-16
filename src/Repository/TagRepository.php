@@ -19,6 +19,13 @@ class TagRepository extends ServiceEntityRepository
         parent::__construct($registry, Tag::class);
     }
 
+    public function getAll()
+    {
+        return $this->createQueryBuilder('t')
+            ->orderBy('t.position')
+            ->getQuery();
+    }
+
     public function findLast(int $max)
     {
         return $this->createQueryBuilder('t')

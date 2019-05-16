@@ -326,4 +326,25 @@ class AdminPanelController extends AbstractController
 
         return $this->redirectToRoute('app_adminpanel_categorieslist');
     }
+
+    /**
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/tags")
+     */
+    public function tagsList(Request $request, PaginatorInterface $paginator)
+    {
+        $tags = $this->getDoctrine()->getRepository(Tag::class)->getAll();
+
+        return $this->render('admin_panel/tagsList.html.twig', [
+            'tags' => $paginator->paginate(
+                $tags,
+                $request->query->getInt('page', 1),
+                $this->getParameter('page_range')
+            ),
+        ]);
+    }
 }
