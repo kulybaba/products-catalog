@@ -6,7 +6,7 @@
     <div class="row">
         {{ form_start(form) }}
         {{ form_widget(form) }}
-        <a href="#" class="btn btn-secondary">Back</a>
+        <a href="{{ app.user.roles == ['ROLE_ADMIN_MANAGER'] ? path('app_default_index') : path('app_adminpanel_productslist') }}" class="btn btn-secondary">Back</a>
         <button class="btn btn-success" type="submit">OK</button>
         {{ form_end(form) }}
     </div>

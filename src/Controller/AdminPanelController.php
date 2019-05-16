@@ -169,4 +169,31 @@ class AdminPanelController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @param Product $product
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/products/{id}/edit")
+     */
+    public function editProduct(Request $request, Product $product)
+    {
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+
+            $this->addFlash('notice', 'Product updated!');
+
+            return $this->redirectToRoute('app_default_index');
+        }
+
+        return $this->render('product/newEdit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 }

@@ -31,7 +31,7 @@
                             <td>{{ product.count }}</td>
                             <td>{{ product.price }} {{ product.currency }}</td>
                             <td>
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-marker"></i></a>
+                                <a href="{{ path('app_adminpanel_editproduct', {'id': product.id}) }}" class="btn btn-primary btn-sm"><i class="fas fa-marker"></i></a>
                                 <br><br>
                                 <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
                             </td>
