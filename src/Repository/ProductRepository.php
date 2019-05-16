@@ -25,6 +25,11 @@ class ProductRepository extends ServiceEntityRepository
             ->select('p')
             ->orderBy('p.createdAt', 'DESC');
 
+        if (isset($params['keyword'])) {
+            $qb->andWhere('p.name like :keyword')
+                ->setParameter('keyword', '%' . $params['keyword'] . '%');
+        }
+
         if (isset($params['manager'])) {
             $qb->andWhere('p.manager = :manager')
                 ->setParameter('manager', $params['manager']);
