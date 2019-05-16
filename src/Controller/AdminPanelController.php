@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Form\AssignCategoryType;
+use App\Form\CategoryType;
 use App\Form\ProductType;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -167,6 +168,7 @@ class AdminPanelController extends AbstractController
 
         return $this->render('product/newEdit.html.twig', [
             'form' => $form->createView(),
+            'title' => 'Create',
         ]);
     }
 
@@ -194,6 +196,7 @@ class AdminPanelController extends AbstractController
 
         return $this->render('product/newEdit.html.twig', [
             'form' => $form->createView(),
+            'title' => 'Edit',
         ]);
     }
 
@@ -244,6 +247,35 @@ class AdminPanelController extends AbstractController
                 $request->query->getInt('page', 1),
                 $this->getParameter('page_range')
             ),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/categories/new")
+     */
+    public function newCategory(Request $request)
+    {
+        $category = new Category();
+
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+
+            $this->addFlash('notice', 'Category created!');
+
+            return $this->redirectToRoute('app_adminpanel_categorieslist');
+        }
+
+        return $this->render('category/newEdit.html.twig', [
+            'form' => $form->createView(),
+            'title' => 'Create'
         ]);
     }
 }

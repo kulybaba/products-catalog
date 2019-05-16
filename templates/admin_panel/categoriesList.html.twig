@@ -5,7 +5,7 @@
 {% block body %}
     <div class="row">
         <div>
-            <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
+            <a href="{{ path('app_adminpanel_newcategory') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
         </div>
         <br><br>
         {% if categories and categories|length > 0 %}
@@ -25,7 +25,7 @@
                             <td>{{ category.name }}</td>
                             <td>{{ category.position }}</td>
                             <td>
-                                <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-marker"></i></a>
+                                <a href="" class="btn btn-primary btn-sm"><i class="fas fa-marker"></i></a>
                                 <button type="button" data-toggle="modal" data-target="#deleteModal{{ category.id }}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
