@@ -278,4 +278,31 @@ class AdminPanelController extends AbstractController
             'title' => 'Create'
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @param Category $category
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/categories/{id}/edit")
+     */
+    public function editCategory(Request $request, Category $category)
+    {
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+
+            $this->addFlash('notice', 'Category updated!');
+
+            return $this->redirectToRoute('app_adminpanel_categorieslist');
+        }
+
+        return $this->render('category/newEdit.html.twig', [
+            'form' => $form->createView(),
+            'title' => 'Edit',
+        ]);
+    }
 }

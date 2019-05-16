@@ -25,7 +25,7 @@
                             <td>{{ category.name }}</td>
                             <td>{{ category.position }}</td>
                             <td>
-                                <a href="" class="btn btn-primary btn-sm"><i class="fas fa-marker"></i></a>
+                                <a href="{{ path('app_adminpanel_editcategory', {'id': category.id}) }}" class="btn btn-primary btn-sm"><i class="fas fa-marker"></i></a>
                                 <button type="button" data-toggle="modal" data-target="#deleteModal{{ category.id }}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
