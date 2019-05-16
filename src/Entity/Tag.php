@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
@@ -22,6 +23,7 @@ class Tag
      * @var string
      *
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $text;
 
@@ -29,6 +31,7 @@ class Tag
      * @var integer
      *
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\NotBlank()
      */
     private $position;
 

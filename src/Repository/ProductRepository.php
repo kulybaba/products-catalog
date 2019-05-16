@@ -33,7 +33,7 @@ class ProductRepository extends ServiceEntityRepository
         return $qb->getQuery();
     }
 
-    public function findLastProducts(int $max)
+    public function findLast(int $max)
     {
         return $this->createQueryBuilder('p')
             ->orderBy('p.createdAt', 'DESC')

@@ -15,6 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface
 {
+    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN',
+        ROLE_ADMIN_MANAGER = 'ROLE_ADMIN_MANAGER',
+        ROLE_USER = 'ROLE_USER';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -85,6 +89,7 @@ class User implements UserInterface
     private $apiToken;
 
     /**
+     * @Assert\NotBlank(groups={"assign_categories"})
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="users")
      */
     private $category;

@@ -9,8 +9,8 @@
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
         {{ form_widget(form) }}
-        <a href="#" class="btn btn-secondary">Back</a>
-        <button class="btn btn-success" type="submit">Login</button>
+        <a href="{{ path('app_default_index') }}" class="btn btn-secondary btn-sm">Back</a>
+        <button class="btn btn-success btn-sm" type="submit">Login</button>
         {{ form_end(form) }}
     </div>
 {% endblock %}

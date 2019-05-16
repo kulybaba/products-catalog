@@ -23,3 +23,8 @@ body {
 .color-block {
     border: 1px solid #000000;
 }
+
+table {
+    font-size: 13px;
+    margin-right: 15px;
+}

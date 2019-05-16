@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ title }} product{% endblock %}
+{% block title %}{{ title }} category{% endblock %}
 
 {% block body %}
     <div class="row">
         {{ form_start(form) }}
         {{ form_widget(form) }}
-        <a href="{{ app.user.roles == ['ROLE_ADMIN_MANAGER'] ? path('app_default_index') : path('app_adminpanel_productslist') }}" class="btn btn-secondary btn-sm">Back</a>
+        <a href="{{ path('app_adminpanel_categorieslist') }}" class="btn btn-secondary btn-sm">Back</a>
         <button class="btn btn-success btn-sm" type="submit">{{ title }}</button>
         {{ form_end(form) }}
     </div>

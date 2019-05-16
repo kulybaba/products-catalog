@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Products{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div>
+            <a href="{{ path('app_adminpanel_newproduct') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
+        </div>
+        <br><br>
+        {% if products and products|length > 0 %}
+            <table class="table table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Manager</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Color</th>
+                    <th scope="col">Count</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <th scope="row">{{ product.id }}</th>
+                            <td>{{ product.manager.firstName }} {{ product.manager.lastName }}</td>
+                            <td>{{ product.name|length > 40 ? product.name|slice(0, 39) ~ '...' : product.name }}</td>
+                            <td><span class="color-block" style="background-color: {{ product.color }};">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+                            <td>{{ product.count }}</td>
+                            <td>{{ product.price }} {{ product.currency }}</td>
+                            <td>
+                                <a href="{{ path('app_adminpanel_editproduct', {'id': product.id}) }}" class="btn btn-primary btn-sm"><i class="fas fa-marker"></i></a>
+                                <br><br>
+                                <button type="button" data-toggle="modal" data-target="#deleteModal{{ product.id }}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        {{ include('admin_panel/deleteModal.html.twig', {'id': product.id, 'title': 'product', 'route': 'app_adminpanel_deleteproduct'}) }}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Empty!</p>
+        {% endif %}
+    </div>
+    <div class="row">
+        {{ knp_pagination_render(products) }}
+    </div>
+{% endblock %}
