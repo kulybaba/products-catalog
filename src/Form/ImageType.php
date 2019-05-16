@@ -16,6 +16,9 @@ class ImageType extends AbstractType
             ->add('url', FileType::class, [
                 'label' => 'Image',
                 'data_class' => null,
+                'attr' => [
+                    'class' => 'form-control-file form-group',
+                ],
             ]);
     }
 

@@ -19,14 +19,37 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('name', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control form-group',
+                ],
+            ])
             ->add('description', TextType::class, [
                 'required' => false,
+                'attr' => [
+                    'class' => 'form-control form-group',
+                ],
             ])
-            ->add('color', ColorType::class)
-            ->add('count', IntegerType::class)
-            ->add('price', NumberType::class)
-            ->add('currency', TextType::class)
+            ->add('color', ColorType::class, [
+                'attr' => [
+                    'class' => 'form-control form-group',
+                ],
+            ])
+            ->add('count', IntegerType::class, [
+                'attr' => [
+                    'class' => 'form-control form-group',
+                ],
+            ])
+            ->add('price', NumberType::class, [
+                'attr' => [
+                    'class' => 'form-control form-group',
+                ],
+            ])
+            ->add('currency', TextType::class, [
+                'attr' => [
+                    'class' => 'form-control form-group',
+                ],
+            ])
             ->add('image', ImageType::class, [
                 'required' => false,
                 'label' => false,
@@ -36,7 +59,7 @@ class ProductType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => true,
                 'attr' => [
-                    'class' => 'multi-selector',
+                    'class' => 'multi-selector form-control form-group',
                 ],
             ])
             ->add('tag', EntityType::class, [

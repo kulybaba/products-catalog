@@ -35,7 +35,9 @@
             <p>Not comments!</p>
         {% endif %}
         <div class="navigation">
-            {{ knp_pagination_render(comments) }}
+            {{ knp_pagination_render(comments, null, {}, {
+                'size': 'small',
+            }) }}
         </div>
     </div>
 </div>
