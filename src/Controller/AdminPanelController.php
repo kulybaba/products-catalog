@@ -405,4 +405,22 @@ class AdminPanelController extends AbstractController
             'title' => 'Edit',
         ]);
     }
+
+    /**
+     * @param Tag $tag
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/tags/{id}/delete")
+     */
+    public function deleteTag(Tag $tag)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($tag);
+        $em->flush();
+
+        $this->addFlash('notice', 'Tag deleted!');
+
+        return $this->redirectToRoute('app_adminpanel_tagslist');
+    }
 }

@@ -29,7 +29,7 @@
                                 <button type="button" data-toggle="modal" data-target="#deleteModal{{ tag.id }}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
-                        {{ include('admin_panel/deleteModal.html.twig', {'id': tag.id, 'title': 'tag', 'route': 'app_adminpanel_deletecategory'}) }}
+                        {{ include('admin_panel/deleteModal.html.twig', {'id': tag.id, 'title': 'tag', 'route': 'app_adminpanel_deletetag'}) }}
                     {% endfor %}
                 </tbody>
             </table>
