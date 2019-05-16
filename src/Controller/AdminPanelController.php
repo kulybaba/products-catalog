@@ -377,4 +377,32 @@ class AdminPanelController extends AbstractController
             'title' => 'Create'
         ]);
     }
+
+    /**
+     * @param Request $request
+     * @param Tag $tag
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/tags/{id}/edit")
+     */
+    public function editTag(Request $request, Tag $tag)
+    {
+        $form = $this->createForm(TagType::class, $tag);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($tag);
+            $em->flush();
+
+            $this->addFlash('notice', 'Tag updated!');
+
+            return $this->redirectToRoute('app_adminpanel_tagslist');
+        }
+
+        return $this->render('tag/newEdit.html.twig', [
+            'form' => $form->createView(),
+            'title' => 'Edit',
+        ]);
+    }
 }
