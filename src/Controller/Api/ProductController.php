@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Category;
 use App\Entity\Product;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,6 +27,29 @@ class ProductController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $products = $this->getDoctrine()->getRepository(Product::class)->getAll(['manager' => $this->getUser()]);
+
+        return $this->json([
+            'products' => $paginator->paginate(
+                $products,
+                $request->query->getInt('page', 1),
+                $this->getParameter('page_range')
+            ),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("/category/{id}", requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function listByCategory(Request $request, PaginatorInterface $paginator, Category $category)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $products = $this->getDoctrine()->getRepository(Product::class)->getAll(['categoryId' => $category->getId()]);
 
         return $this->json([
             'products' => $paginator->paginate(
