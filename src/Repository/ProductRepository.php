@@ -52,4 +52,15 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findStartEndDates($start, $end)
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.createdAt')
+            ->andWhere('p.createdAt BETWEEN :start AND :end')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getResult();
+    }
 }

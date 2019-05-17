@@ -1,0 +1,9 @@
+<h2>New products:</h2>
+{% for product in products %}
+    <h3>{{ product.name }}</h3>
+    {% if product.image %}
+        <img src="{{ product.image.url }}" width="300">
+    {% endif %}
+    <p><i>{{ product.manager.firstName }} {{ product.manager.lastName }}</i></p>
+    <hr>
+{% endfor %}
