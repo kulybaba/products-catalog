@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\Category;
 use App\Entity\Product;
+use App\Entity\Tag;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -172,6 +173,54 @@ class ProductController extends AbstractController
             'code' => 200,
             'success' => true,
             'message' => 'Category removed',
+        ]);
+    }
+
+    /**
+     * @param Product $product
+     * @param Tag $tag
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("/{product}/add-tag/{tag}", requirements={"product"="\d+", "tag"="\d+"}, methods={"POST"})
+     */
+    public function addTag(Product $product, Tag $tag)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $product->addTag($tag);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
+
+        return $this->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'Tag added',
+        ]);
+    }
+
+    /**
+     * @param Product $product
+     * @param Tag $tag
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("/{product}/remove-tag/{tag}", requirements={"product"="\d+", "tag"="\d+"}, methods={"DELETE"})
+     */
+    public function removeTag(Product $product, Tag $tag)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $product->removeTag($tag);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
+
+        return $this->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'Tag removed',
         ]);
     }
 }
