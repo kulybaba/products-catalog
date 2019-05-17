@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Form\CommentType;
+use App\Security\Voter\CommentVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,6 +25,8 @@ class CommentController extends AbstractController
      */
     public function edit(Request $request, Comment $comment)
     {
+        $this->denyAccessUnlessGranted('edit_comment', $comment->getUser());
+
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,6 +56,8 @@ class CommentController extends AbstractController
      */
     public function delete(Comment $comment)
     {
+        $this->denyAccessUnlessGranted('delete_comment', $comment->getUser());
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($comment);
         $em->flush();
