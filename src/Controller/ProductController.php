@@ -9,6 +9,7 @@ use App\Entity\Star;
 use App\Form\CommentType;
 use App\Form\ProductType;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -72,6 +73,7 @@ class ProductController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      *
      * @Route("/new")
+     * @IsGranted("ROLE_ADMIN_MANAGER")
      */
     public function new(Request $request, S3Manager $s3Manager)
     {
@@ -110,6 +112,7 @@ class ProductController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      *
      * @Route("/{id}/edit")
+     * @IsGranted("ROLE_ADMIN_MANAGER")
      */
     public function edit(Request $request, Product $product)
     {
@@ -129,34 +132,5 @@ class ProductController extends AbstractController
             'form' => $form->createView(),
             'title' => 'Edit',
         ]);
-    }
-
-    /**
-     * @param Product $product
-     * @param S3Manager $s3Manager
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     *
-     * @throws \Exception
-     *
-     * @Route("/{id}/delete")
-     */
-    public function delete(Product $product, S3Manager $s3Manager)
-    {
-        try {
-            if ($product->getImage()) {
-                $s3Manager->deletePicture($product->getImage()->getS3Key());
-            }
-
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($product);
-            $em->flush();
-
-            $this->addFlash('notice', 'Product deleted!');
-
-            return $this->redirectToRoute('app_default_index');
-        } catch (Exception $e) {
-            throw new \Exception($e->getMessage());
-        }
     }
 }

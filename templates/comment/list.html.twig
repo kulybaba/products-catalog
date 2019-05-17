@@ -6,16 +6,18 @@
             </div>
         </div>
     </div>
-    <div class="card-body p-3">
-        <div class="row">
-            <div class="col">
-                {{ form_start(form) }}
-                {{ form_widget(form) }}
-                <button class="btn btn-primary btn-sm float-right mt-0" type="submit">Write</button>
-                {{ form_end(form) }}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="card-body p-3">
+            <div class="row">
+                <div class="col">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <button class="btn btn-primary btn-sm float-right mt-0" type="submit">Write</button>
+                    {{ form_end(form) }}
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
     <div class="card-body p-3">
         {% if comments is defined %}
             {% for comment in comments %}
@@ -23,10 +25,16 @@
                     <div class="ml-3">
                         <p class="comments-font-size m-0"><b>{{ comment.user.firstName }} {{ comment.user.lastName }}</b> ({{ comment.createdAt|date }})</p>
                         <p class="m-0">{{ comment.text }}</p>
-                        <p class="m-0">
-                            <a href="{{ path('app_comment_edit', {'id': comment.id}) }}" class="btn btn-secondary btn-sm comment-btn-style"><i class="fas fa-pen"></i></a>
-                            <button type="button" data-toggle="modal" data-target="#deleteModal{{ comment.id }}" class="btn btn-secondary btn-sm comment-btn-style"><i class="fas fa-times"></i></button>
-                        </p>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <p class="m-0">
+                                {% if app.user == comment.user or is_granted('ROLE_SUPER_ADMIN') %}
+                                    <a href="{{ path('app_comment_edit', {'id': comment.id}) }}" class="btn btn-secondary btn-sm comment-btn-style"><i class="fas fa-pen"></i></a>
+                                    <button type="button" data-toggle="modal" data-target="#deleteModal{{ comment.id }}" class="btn btn-secondary btn-sm comment-btn-style"><i class="fas fa-times"></i></button>
+                                {% elseif app.user == product.manager %}
+                                    <button type="button" data-toggle="modal" data-target="#deleteModal{{ comment.id }}" class="btn btn-secondary btn-sm comment-btn-style"><i class="fas fa-times"></i></button>
+                                {% endif %}
+                            </p>
+                        {% endif %}
                     </div>
                 </div>
                 {{ include('admin_panel/deleteModal.html.twig', {'id': comment.id, 'title': 'comment', 'route': 'app_comment_delete'}) }}
