@@ -150,4 +150,28 @@ class ProductController extends AbstractController
             'message' => 'Category added',
         ]);
     }
+
+    /**
+     * @param Product $product
+     * @param Category $category
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("/{product}/remove-category/{category}", requirements={"product"="\d+", "category"="\d+"}, methods={"DELETE"})
+     */
+    public function removeCategory(Product $product, Category $category)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $product->removeCategory($category);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
+
+        return $this->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'Category removed',
+        ]);
+    }
 }
