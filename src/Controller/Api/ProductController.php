@@ -72,6 +72,22 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @param Product $product
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("/{id}/view", requirements={"id"="\d+"}, methods={"GET"})
+     */
+    public function view(Product $product)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        return $this->json([
+            'product' => $product,
+        ]);
+    }
+
+    /**
      * @param Request $request
      * @param SerializerInterface $serializer
      * @param ValidatorInterface $validator
@@ -293,6 +309,7 @@ class ProductController extends AbstractController
     public function removeImage(Product $product, S3Manager $s3Manager)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $image = $product->getImage();
 
         if (!$image) {
