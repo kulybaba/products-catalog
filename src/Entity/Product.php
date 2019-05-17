@@ -26,7 +26,7 @@ class Product
      * @var string $name
      *
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"apiNew"})
      */
     private $name;
 
@@ -41,7 +41,7 @@ class Product
      * @var string $color
      *
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"apiNew"})
      */
     private $color;
 
@@ -49,7 +49,7 @@ class Product
      * @var integer $count
      *
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"apiNew"})
      */
     private $count;
 
@@ -57,7 +57,7 @@ class Product
      * @var integer $price
      *
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"apiNew"})
      */
     private $price;
 
@@ -65,7 +65,7 @@ class Product
      * @var string $currency
      *
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"apiNew"})
      */
     private $currency;
 
@@ -76,7 +76,7 @@ class Product
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="products")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"apiNew"})
      */
     private $category;
 
