@@ -2,12 +2,17 @@
 
 namespace App\Controller\Api;
 
+use App\Aws\S3Manager;
 use App\Entity\Category;
+use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\Tag;
+use App\Service\ImageService;
+use Imagick;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -79,7 +84,7 @@ class ProductController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if (!$request->getContent()) {
-            throw new HttpException('400', 'Bad request');
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'Bad request');
         }
 
         /** @var Product $product */
@@ -87,7 +92,7 @@ class ProductController extends AbstractController
         $product->setManager($this->getUser());
 
         if (count($validator->validate($product, null, 'apiNew'))) {
-            throw new HttpException('400', 'Bad request');
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'Bad request');
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -112,13 +117,13 @@ class ProductController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         if (!$request->getContent()) {
-            throw new HttpException('400', 'Bad request');
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'Bad request');
         }
 
         $serializer->deserialize($request->getContent(), Product::class, JsonEncoder::FORMAT, [AbstractNormalizer::OBJECT_TO_POPULATE => $product]);
 
         if (count($validator->validate($product))) {
-            throw new HttpException('400', 'Bad request');
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'Bad request');
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -221,6 +226,53 @@ class ProductController extends AbstractController
             'code' => 200,
             'success' => true,
             'message' => 'Tag removed',
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param S3Manager $s3Manager
+     * @param Product $product
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @throws \ImagickException
+     *
+     * @Route("/{id}/add-image", requirements={"id"="\d+"}, methods={"POST"})
+     */
+    public function addImage(Request $request, S3Manager $s3Manager, Product $product, ImageService $imageService)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $content = $request->getContent();
+
+        if (!$content) {
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'Bad request');
+        }
+
+        $picture = new Imagick();
+
+        if (!$picture->readImageBlob($content)) {
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'Bad request');
+        }
+
+        $extension = $imageService->getImageExtensionFromBinary($content);
+
+        $result = $s3Manager->uploadPicture($content, $extension);
+
+        $image = new Image();
+        $image->setUrl($result['url']);
+        $image->setS3Key($result['key']);
+
+        $product->setImage($image);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
+
+        return $this->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'Image added',
         ]);
     }
 }

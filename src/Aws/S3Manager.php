@@ -44,17 +44,17 @@ class S3Manager extends AbstractController
      *
      * @throws Exception
      */
-    public function uploadPicture(File $image)
+    public function uploadPicture($image, $extension)
     {
         try {
-            $key = $this->prefix . '/' .  md5(uniqid()) . '.' . $image->guessExtension();
+            $key = $this->prefix . '/' .  md5(uniqid()) . '.' . $extension;
 
             $result = $this->s3->putObject([
                 'Bucket' => $this->bucket,
                 'Key' => $key,
-                'Body' => fopen($image, 'rb'),
+                'Body' => $image,
                 'ACL' => 'public-read-write',
-                'ContentType' => $image->guessExtension(),
+                'ContentType' => $extension,
             ]);
 
             return [

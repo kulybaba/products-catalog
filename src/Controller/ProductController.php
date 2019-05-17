@@ -85,7 +85,7 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($image = $product->getImage()) {
                 $imageFile = $this->file($image->getUrl())->getFile();
-                $result = $s3Manager->uploadPicture($imageFile);
+                $result = $s3Manager->uploadPicture(fopen($imageFile, 'rb'), $imageFile->guessExtension());
                 $product->getImage()->setUrl($result['url']);
                 $product->getImage()->setS3Key($result['key']);
             }
