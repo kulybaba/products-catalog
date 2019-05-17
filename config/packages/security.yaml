@@ -41,6 +41,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin, roles: ROLE_SUPER_ADMIN }
+        - { path: ^/api/products, roles: ROLE_ADMIN_MANAGER }
 
     role_hierarchy:
         ROLE_ADMIN_MANAGER:       ROLE_USER
