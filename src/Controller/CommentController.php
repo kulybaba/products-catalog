@@ -25,8 +25,6 @@ class CommentController extends AbstractController
      */
     public function edit(Request $request, Comment $comment)
     {
-        $this->denyAccessUnlessGranted('edit_comment', $comment->getUser());
-
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -56,8 +54,6 @@ class CommentController extends AbstractController
      */
     public function delete(Comment $comment)
     {
-        $this->denyAccessUnlessGranted('delete_comment', $comment->getUser());
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($comment);
         $em->flush();

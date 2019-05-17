@@ -27,6 +27,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $urlGenerator;
     private $csrfTokenManager;
     private $passwordEncoder;
+    private $userRole;
 
     public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -71,6 +72,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
+        $this->userRole = $user->getRoles();
+
         return $user;
     }
 
@@ -83,6 +86,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
+        }
+
+        if ($this->userRole == ['ROLE_SUPER_ADMIN']) {
+            return new RedirectResponse($this->urlGenerator->generate('app_adminpanel_index'));
         }
 
         return new RedirectResponse($this->urlGenerator->generate('app_default_index'));

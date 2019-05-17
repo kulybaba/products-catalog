@@ -18,6 +18,8 @@ class StarController extends AbstractController
      */
     public function star()
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $product = $this->getDoctrine()->getRepository(Product::class)->find(Request::createFromGlobals()->request->get('id'));
         $user = $this->getUser();
 
@@ -44,6 +46,8 @@ class StarController extends AbstractController
      */
     public function unstar()
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $id = Request::createFromGlobals()->request->get('id');
 
         if ($star = $this->getDoctrine()->getRepository(Star::class)->findOneBy(['user' => $this->getUser()->getId(), 'product' => $id])) {
