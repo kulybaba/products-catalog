@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Entity\User;
 use App\Service\UserService;
+use App\Service\EmailService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -22,8 +23,13 @@ class UserController extends AbstractController
     /**
      * @Route("/registration", methods={"POST"})
      */
-    public function registaration(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, UserService $userService)
-    {
+    public function registaration(
+        Request $request,
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
+        UserService $userService,
+        EmailService $emailService
+    ) {
         if (!$request->getContent()) {
             throw new HttpException('400', 'Bad request');
         }
@@ -40,6 +46,8 @@ class UserController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
+
+        $emailService->sendRegistrationEmail($user);
 
         return $this->json(['user' => $user]);
     }

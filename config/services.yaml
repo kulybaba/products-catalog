@@ -34,6 +34,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber, event: prePersist }
 
+    App\Service\EmailService:
+        arguments:
+            - '%env(resolve:ADMIN_EMAIL)%'
+
     Aws\S3\S3Client:
         arguments:
             - region: '%env(resolve:AWS_REGION)%'
