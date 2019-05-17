@@ -11,7 +11,7 @@ class CategoryNormalizer implements NormalizerInterface
     {
         return $data = [
             'id' => $category->getId(),
-            'text' => $category->getText(),
+            'name' => $category->getName(),
             'position' => $category->getPosition(),
         ];
     }
