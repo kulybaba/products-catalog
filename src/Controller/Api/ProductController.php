@@ -244,6 +244,10 @@ class ProductController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        if ($image = $product->getImage()) {
+            $s3Manager->deletePicture($image->getS3Key());
+        }
+
         $content = $request->getContent();
 
         if (!$content) {
@@ -273,6 +277,42 @@ class ProductController extends AbstractController
             'code' => 200,
             'success' => true,
             'message' => 'Image added',
+        ]);
+    }
+
+    /**
+     * @param Product $product
+     * @param S3Manager $s3
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @throws \Exception
+     *
+     * @Route("/{id}/remove-image", requirements={"id"="\d+"}, methods={"DELETE"})
+     */
+    public function removeImage(Product $product, S3Manager $s3Manager)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $image = $product->getImage();
+
+        if (!$image) {
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'No product image');
+        }
+
+        $s3Manager->deletePicture($image->getS3Key());
+
+        $product->setImage(null);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
+
+        $em->remove($image);
+        $em->flush();
+
+        return $this->json([
+            'code' => 200,
+            'success' => true,
+            'message' => 'Image removed',
         ]);
     }
 }
