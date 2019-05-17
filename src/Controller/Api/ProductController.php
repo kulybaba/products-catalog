@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -85,6 +86,37 @@ class ProductController extends AbstractController
         $product->setManager($this->getUser());
 
         if (count($validator->validate($product, null, 'apiNew'))) {
+            throw new HttpException('400', 'Bad request');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
+
+        return $this->json(['product' => $product]);
+    }
+
+    /**
+     * @param Request $request
+     * @param SerializerInterface $serializer
+     * @param ValidatorInterface $validator
+     * @param Product $product
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("/{id}/edit", requirements={"id"="\d+"}, methods={"PUT"})
+     */
+    public function edit(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, Product $product)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if (!$request->getContent()) {
+            throw new HttpException('400', 'Bad request');
+        }
+
+        $serializer->deserialize($request->getContent(), Product::class, JsonEncoder::FORMAT, [AbstractNormalizer::OBJECT_TO_POPULATE => $product]);
+
+        if (count($validator->validate($product))) {
             throw new HttpException('400', 'Bad request');
         }
 
