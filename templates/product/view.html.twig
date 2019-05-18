@@ -4,7 +4,10 @@
 
 {% block body %}
     <div class="row">
-        {% if product and product|length > 0 %}
+        {{ include('alert.html.twig', {'type': 'success'}) }}
+    </div>
+    <div class="row">
+        {% if product %}
             <div class="card card-product">
                 <div class="card-header bg-transparent">
                     <div class="row">
@@ -26,16 +29,18 @@
                     {% endif %}
                     <p class="card-text pl-2 pt-3">{{ product.description }}</p>
                     <hr class="p-0 m-0">
-                    <p class="card-text pt-3 pb-0 pl-2 categories-tags-font-size">
-                        {% for tag in product.tag %}
-                            <i class="fas fa-tag"></i>&nbsp;{{ tag.text }}&nbsp;&nbsp;
-                        {% endfor %}
-                    </p>
-                    <hr class="p-0 m-0">
+                    {% if product.tag and product.tag|length > 0 %}
+                        <p class="card-text pt-3 pb-0 pl-2 categories-tags-font-size">
+                            {% for tag in product.tag %}
+                                <i class="fas fa-tag"></i>&nbsp;{{ tag.text }}&nbsp;&nbsp;
+                            {% endfor %}
+                        </p>
+                        <hr class="p-0 m-0">
+                    {% endif %}
                     <p class="card-text pl-2 pt-1 categories-tags-font-size">
                         <b>Categories:</b>
                         {% for category in product.category %}
-                            {{ category.name }},
+                            {{ category.name }}&nbsp;
                         {% endfor %}
                     </p>
                 </div>

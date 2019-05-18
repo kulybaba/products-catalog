@@ -4,6 +4,9 @@
 
 {% block body %}
     <div class="row">
+        {{ include('alert.html.twig', {'type': 'success'}) }}
+    </div>
+    <div class="row">
         <div>
             <a href="{{ path('app_adminpanel_newcategory') }}" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i></a>
         </div>
