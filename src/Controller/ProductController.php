@@ -12,6 +12,8 @@ use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -140,6 +142,42 @@ class ProductController extends AbstractController
         return $this->render('product/newEdit.html.twig', [
             'form' => $form->createView(),
             'title' => 'Edit',
+            'id' => $product->getId(),
+            'image' => $product->getImage(),
+        ]);
+    }
+
+    /**
+     * @param Product $product
+     * @param S3Manager $s3Manager
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @Route("/{id}/delete-image")
+     * @IsGranted("ROLE_ADMIN_MANAGER")
+     */
+    public function deleteImage(Product $product, S3Manager $s3Manager)
+    {
+        $image = $product->getImage();
+
+        if (!$image) {
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'Product not has image.');
+        }
+
+        $s3Manager->deletePicture($image->getS3Key());
+
+        $product->setImage(null);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
+
+        $em->remove($image);
+        $em->flush();
+
+        $this->addFlash('notice', 'Image deleted!');
+
+        return $this->redirectToRoute('app_product_view', [
+            'id' => $product->getId(),
         ]);
     }
 }
