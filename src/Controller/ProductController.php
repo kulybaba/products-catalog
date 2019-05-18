@@ -114,11 +114,20 @@ class ProductController extends AbstractController
      * @Route("/{id}/edit")
      * @IsGranted("ROLE_ADMIN_MANAGER")
      */
-    public function edit(Request $request, Product $product)
+    public function edit(Request $request, Product $product, S3Manager $s3Manager)
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($image = $product->getImage()) {
+                if ($image->getS3Key()) {
+                    $s3Manager->deletePicture($image->getS3Key());
+                }
+                $imageFile = $this->file($image->getFile())->getFile();
+                $result = $s3Manager->uploadPicture(fopen($imageFile, 'rb'), $imageFile->guessExtension());
+                $product->getImage()->setUrl($result['url']);
+                $product->getImage()->setS3Key($result['key']);
+            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
