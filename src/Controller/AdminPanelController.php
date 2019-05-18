@@ -73,6 +73,8 @@ class AdminPanelController extends AbstractController
         $user->setRoles([User::ROLE_ADMIN_MANAGER]);
         $this->getDoctrine()->getManager()->flush();
 
+        $this->addFlash('notice', 'Made by manager!');
+
         return $this->redirectToRoute('app_adminpanel_userslist');
     }
 
@@ -88,6 +90,8 @@ class AdminPanelController extends AbstractController
         $user->setRoles([User::ROLE_USER]);
         $user->getCategory()->clear();
         $this->getDoctrine()->getManager()->flush();
+
+        $this->addFlash('notice', 'Made by user!');
 
         return $this->redirectToRoute('app_adminpanel_userslist');
     }
@@ -108,6 +112,8 @@ class AdminPanelController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            $this->addFlash('notice', 'Сategories are assigned!');
 
             return $this->redirectToRoute('app_adminpanel_userslist');
         }

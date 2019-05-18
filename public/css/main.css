@@ -52,3 +52,7 @@ table {
     height: 20px;
     font-size: 10px;
 }
+
+.alert {
+    width: 555px;
+}
