@@ -10,8 +10,19 @@
                     <div class="col">
                         {{ form_start(form) }}
                         {{ form_widget(form) }}
-                        <a href="{{ app.user.roles == ['ROLE_ADMIN_MANAGER'] ? path('app_default_index') : path('app_adminpanel_productslist') }}" class="btn btn-secondary btn-sm">Back</a>
-                        <button class="btn btn-success btn-sm float-right" type="submit">{{ title }}</button>
+                        <div class="row">
+                            <div class="col text-left">
+                                <a href="{{ app.user.roles == ['ROLE_ADMIN_MANAGER'] ? path('app_default_index') : path('app_adminpanel_productslist') }}" class="btn btn-secondary btn-sm">Back</a>
+                            </div>
+                            <div class="col text-center">
+                                {% if image %}
+                                    <a href="{{ path('app_product_deleteimage', {'id': id}) }}" class="btn btn-danger btn-sm">Delete image</a>
+                                {% endif %}
+                            </div>
+                            <div class="col text-right">
+                                <button class="btn btn-success btn-sm" type="submit">{{ title }}</button>
+                            </div>
+                        </div>
                         {{ form_end(form) }}
                     </div>
                 </div>
