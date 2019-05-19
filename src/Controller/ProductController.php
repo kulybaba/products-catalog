@@ -86,7 +86,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($image = $product->getImage()) {
-                $imageFile = $this->file($image->getUrl())->getFile();
+                $imageFile = $this->file($image->getFile())->getFile();
                 $result = $s3Manager->uploadPicture(fopen($imageFile, 'rb'), $imageFile->guessExtension());
                 $product->getImage()->setUrl($result['url']);
                 $product->getImage()->setS3Key($result['key']);
@@ -104,6 +104,7 @@ class ProductController extends AbstractController
         return $this->render('product/newEdit.html.twig', [
             'form' => $form->createView(),
             'title' => 'Create',
+            'image' => $product->getImage(),
         ]);
     }
 
