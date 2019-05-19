@@ -12,15 +12,15 @@
                         {{ form_widget(form) }}
                         <div class="row">
                             <div class="col text-left">
-                                <a href="{{ app.user.roles == ['ROLE_ADMIN_MANAGER'] ? path('app_default_index') : path('app_adminpanel_productslist') }}" class="btn btn-secondary btn-sm">Back</a>
+                                <a href="{{ app.user.roles == ['ROLE_ADMIN_MANAGER'] ? path('app_default_index') : path('app_adminpanel_productslist') }}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i>&nbsp;Back</a>
                             </div>
                             <div class="col text-center">
                                 {% if image %}
-                                    <a href="{{ path('app_product_deleteimage', {'id': id}) }}" class="btn btn-danger btn-sm">Delete image</a>
+                                    <a href="{{ path('app_product_deleteimage', {'id': id}) }}" class="btn btn-danger btn-sm"><i class="fas fa-times"></i>&nbsp;Delete image</a>
                                 {% endif %}
                             </div>
                             <div class="col text-right">
-                                <button class="btn btn-success btn-sm" type="submit">{{ title }}</button>
+                                <button class="btn btn-success btn-sm" type="submit"><i class="fas fa-check"></i>&nbsp;{{ title }}</button>
                             </div>
                         </div>
                         {{ form_end(form) }}
