@@ -13,6 +13,8 @@
 
 **Login as manager (ROLE_ADMIN_MANAGER):** manager@mail.com 11111111
 
+**Login as super admin (ROLE_SUPER_ADMIN):** superadmin@mail.com 11111111
+
 **Cron:**
 1. crontab -e
 2. Add: @daily php /(path to the project directory)/bin/console send:new-products

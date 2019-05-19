@@ -54,7 +54,7 @@ class DefaultFixtures extends Fixture
         $user = new User();
         $user->setFirstName('User');
         $user->setLastName('User');
-        $user->setRoles([USER::ROLE_USER]);
+        $user->setRoles([User::ROLE_USER]);
         $user->setEmail('user@mail.com');
         $user->setPlainPassword('11111111');
         $user->setApiToken($this->userService->generateApiToken());
@@ -64,12 +64,22 @@ class DefaultFixtures extends Fixture
         $adminManager = new User();
         $adminManager->setFirstName('Admin');
         $adminManager->setLastName('Manager');
-        $adminManager->setRoles([USER::ROLE_ADMIN_MANAGER]);
+        $adminManager->setRoles([User::ROLE_ADMIN_MANAGER]);
         $adminManager->setEmail('manager@mail.com');
         $adminManager->setPlainPassword('11111111');
         $adminManager->setApiToken($this->userService->generateApiToken());
         $adminManager->addCategory($category2);
         $manager->persist($adminManager);
+        $manager->flush();
+
+        $superAdmin = new User();
+        $superAdmin->setFirstName('Super');
+        $superAdmin->setLastName('Admin');
+        $superAdmin->setRoles([User::ROLE_SUPER_ADMIN]);
+        $superAdmin->setEmail('superadmin@mail.com');
+        $superAdmin->setPlainPassword('11111111');
+        $superAdmin->setApiToken($this->userService->generateApiToken());
+        $manager->persist($superAdmin);
         $manager->flush();
 
         $adminManager->addCategory($category1);
