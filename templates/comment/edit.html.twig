@@ -10,8 +10,8 @@
                     <div class="col">
                         {{ form_start(form) }}
                         {{ form_widget(form) }}
-                        <a href="{{ path('app_product_view', {'id': productId}) }}" class="btn btn-secondary btn-sm">Back</a>
-                        <button class="btn btn-success btn-sm float-right" type="submit">Edit</button>
+                        <a href="{{ path('app_product_view', {'id': productId}) }}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i>&nbsp;Back</a>
+                        <button class="btn btn-success btn-sm float-right" type="submit"><i class="fas fa-check"></i>&nbsp;Edit</button>
                         {{ form_end(form) }}
                     </div>
                 </div>
