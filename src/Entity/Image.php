@@ -35,7 +35,7 @@ class Image
     /**
      * @var UploadedFile
      * @Assert\File(
-     *      maxSize = "5M",
+     *      maxSize = "2M",
      *      mimeTypes = {"image/*"},
      *      maxSizeMessage = "The file is too large ({{ size }}). Allowed maximum size is {{ limit }}",
      *      mimeTypesMessage = "The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}",

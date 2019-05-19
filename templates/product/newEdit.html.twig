@@ -15,7 +15,7 @@
                                 <a href="{{ app.user.roles == ['ROLE_ADMIN_MANAGER'] ? path('app_default_index') : path('app_adminpanel_productslist') }}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i>&nbsp;Back</a>
                             </div>
                             <div class="col text-center">
-                                {% if image %}
+                                {% if image and image.id %}
                                     <a href="{{ path('app_product_deleteimage', {'id': id}) }}" class="btn btn-danger btn-sm"><i class="fas fa-times"></i>&nbsp;Delete image</a>
                                 {% endif %}
                             </div>
