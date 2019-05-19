@@ -19,32 +19,16 @@ class StarRepository extends ServiceEntityRepository
         parent::__construct($registry, Star::class);
     }
 
-    // /**
-    //  * @return Star[] Returns an array of Star objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getAll(array $params = [])
     {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $qb = $this->createQueryBuilder('s')
+            ->orderBy('s.id');
 
-    /*
-    public function findOneBySomeField($value): ?Star
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if (isset($params['user'])) {
+            $qb->andWhere('s.user = :user')
+                ->setParameter('user', $params['user']);
+        }
+
+        return $qb->getQuery();
     }
-    */
 }

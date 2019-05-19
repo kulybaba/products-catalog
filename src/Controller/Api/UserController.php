@@ -15,8 +15,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Class UserController
- * @package App\Controller\Api
  * @Route("/api")
  */
 class UserController extends AbstractController

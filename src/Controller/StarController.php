@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Entity\Star;
 use App\Entity\User;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -63,17 +64,25 @@ class StarController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param PaginatorInterface $paginator
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @Route("/stars")
      */
-    public function starsList()
+    public function starsList(Request $request, PaginatorInterface $paginator)
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $stars = $this->getDoctrine()->getRepository(Star::class)->getAll(['user' => $this->getUser()]);
 
         return $this->render('star/list.html.twig', [
-            'stars' => $user->getStars(),
+            'stars' => $paginator->paginate(
+                $stars,
+                $request->query->getInt('page', 1),
+                $this->getParameter('page_range')
+            ),
         ]);
     }
 }

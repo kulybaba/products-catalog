@@ -19,11 +19,18 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    public function getAll()
+    public function getAll(array $params = [])
     {
-        return $this->createQueryBuilder('c')
-            ->orderBy('c.position')
-            ->getQuery();
+        $qb = $this->createQueryBuilder('c')
+            ->orderBy('c.position');
+
+        if (isset($params['managerId'])) {
+            $qb->join('c.users', 'u')
+                ->andWhere('u.id = :managerId')
+                ->setParameter('managerId', $params['managerId']);
+        }
+
+        return $qb->getQuery();
     }
 
     public function findLast(int $max)
