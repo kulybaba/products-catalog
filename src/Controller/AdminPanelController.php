@@ -212,7 +212,7 @@ class AdminPanelController extends AbstractController
 
             $this->addFlash('notice', 'Product updated!');
 
-            return $this->redirectToRoute('app_default_index');
+            return $this->redirectToRoute('app_adminpanel_productslist');
         }
 
         return $this->render('product/newEdit.html.twig', [
