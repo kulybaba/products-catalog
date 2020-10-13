@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    page_range: 10
+    last_products: 10
+    last_admin: 5
 
 services:
     # default configuration for services in *this* file
@@ -26,3 +29,26 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\EventSubscriber\PasswordEncoderSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber, event: prePersist }
+
+    App\Service\EmailService:
+        arguments:
+            - '%env(resolve:ADMIN_EMAIL)%'
+
+    Aws\S3\S3Client:
+        arguments:
+            - region: '%env(resolve:AWS_REGION)%'
+              version: "2006-03-01"
+              signature_version: v4
+              credentials:
+                  key: '%env(resolve:AWS_KEY)%'
+                  secret: '%env(resolve:AWS_SECRET)%'
+
+    App\Aws\S3Manager:
+        arguments:
+            - '@Aws\S3\S3Client'
+            - '%env(resolve:AWS_BUCKET)%'
+            - '%env(resolve:AWS_S3_PREFIX)%'

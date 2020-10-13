@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="card card-product mb-3">
+            <div class="card-body p-3">
+                <div class="row">
+                    <div class="col">
+                        {{ form_start(form) }}
+                        {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+                        {{ form_widget(form) }}
+                        <a href="{{ path('app_default_index') }}" class="btn btn-secondary btn-sm"><i class="fas fa-arrow-left"></i>&nbsp;Back</a>
+                        <button class="btn btn-success btn-sm float-right" type="submit"><i class="fas fa-check"></i>&nbsp;Login</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

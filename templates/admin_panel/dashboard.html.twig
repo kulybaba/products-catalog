@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin panel{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-3 text-center">
+            <a href="{{ path('app_adminpanel_userslist') }}" class="btn btn-primary">
+                Users
+                <br>
+                <span class="badge badge-light">{{ usersCount }}</span>
+            </a>
+        </div>
+        <div class="col-sm-3 text-center">
+            <a href="{{ path('app_adminpanel_productslist') }}" class="btn btn-primary">
+                Products
+                <br>
+                <span class="badge badge-light">{{ productsCount }}</span>
+            </a>
+        </div>
+        <div class="col-sm-3 text-center">
+            <a href="{{ path('app_adminpanel_categorieslist') }}" class="btn btn-primary">
+                Categories
+                <br>
+                <span class="badge badge-light">{{ categoriesCount }}</span>
+            </a>
+        </div>
+        <div class="col-sm-3 text-center">
+            <a href="{{ path('app_adminpanel_tagslist') }}" class="btn btn-primary">
+                Tags
+                <br>
+                <span class="badge badge-light">{{ tagsCount }}</span>
+            </a>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-action active text-center">Last users</li>
+                {% for user in lastUsers %}
+                    <li class="list-group-item list-group-item-action">{{ user.firstName }} {{ user.lastName }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-sm-6">
+            <div class="list-group">
+                <p class="list-group-item list-group-item-action active text-center">Last products</p>
+                {% for product in lastProducts %}
+                    <a href="{{ path('app_product_view', {'id': product.id}) }}" class="list-group-item list-group-item-action">
+                        {{ product.name|length > 40 ? product.name|slice(0, 39) ~ '...' : product.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-action active text-center">Last categories</li>
+                {% for category in lastCategories %}
+                    <li class="list-group-item list-group-item-action">
+                        {{ category.name|length > 30 ? category.name|slice(0, 29) ~ '...' : category.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-sm-6">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-action active text-center">Last tags</li>
+                {% for tag in lastTags %}
+                    <li class="list-group-item list-group-item-action">
+                        {{ tag.text|length > 30 ? tag.text|slice(0, 29) ~ '...' : tag.text }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

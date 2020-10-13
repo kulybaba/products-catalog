@@ -3,10 +3,101 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('libs/bootstrap/css/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+        {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block header %}
+            <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+                <div class="container">
+                    <span class="navbar-brand">PRODUCTS CATALOG</span>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-light" href="{{ path('app_default_index') }}"><i class="fas fa-home"></i>&nbsp;Home</a>
+                                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                        <li class="nav-item">
+                                            <a class="nav-link text-light" href="{{ path('app_adminpanel_index') }}"><i class="fas fa-tools"></i>&nbsp;Admin panel</a>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav pull-right">
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                {% if is_granted('ROLE_ADMIN_MANAGER') %}
+                                    <li class="nav-item">
+                                        <a class="nav-link text-light" href="{{ path('app_product_new') }}"><i class="fas fa-plus-circle"></i></a>
+                                    </li>
+                                {% endif %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-user"></i>&nbsp;
+                                        {{ app.user.firstName }} {{ app.user.lastName }}
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ path('app_star_starslist') }}"><i class="fas fa-star-half-alt"></i>&nbsp;Stars</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
+                                    </div>
+                                </li>
+                            {% else %}
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt"></i>&nbsp;Login</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" href="{{ path('app_registration') }}"><i class="fas fa-user-edit"></i>&nbsp;Registration</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+
+
+                    </div>
+                </div>
+            </nav>
+        {% endblock %}
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    {{ render(controller('App\\Controller\\DefaultController::categoriesList')) }}
+                </div>
+                <div class="col-6">
+                    {% block body %}{% endblock %}
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <div class="card text-white bg-primary mb-3">
+                            <div class="card-header text-center">
+                                <i class="fas fa-stream"></i>&nbsp;Last products
+                            </div>
+                            {{ render(controller('App\\Controller\\DefaultController::lastProducts')) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% block footer %}
+            <nav class="navbar fixed-bottom navbar-dark bg-primary">
+                <div class="container">
+                    <span class="navbar-text text-light"><b>Developer:</b> Petro Kulybaba</span>
+                </div>
+            </nav>
+        {% endblock %}
+
+        {% block javascripts %}
+            <script src="{{ asset('libs/jquery/jquery-3.4.1.min.js') }}"></script>
+            <script src="{{ asset('libs/bootstrap/js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('js/common.js') }}"></script>
+        {% endblock %}
     </body>
 </html>

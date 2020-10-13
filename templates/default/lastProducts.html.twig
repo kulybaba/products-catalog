@@ -1,0 +1,7 @@
+<div class="list-group list-group-flush">
+    {% for product in products %}
+        <a href="{{ path('app_product_view', {'id': product.id}) }}" class="list-group-item list-group-item-action">
+                <i class="fab fa-product-hunt"></i>&nbsp;{{ product.name|length > 45 ? product.name|slice(0, 44) ~ '...' : product.name }}
+        </a>
+    {% endfor %}
+</div>
