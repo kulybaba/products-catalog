@@ -1,3 +1,15 @@
+**PRODUCTS CATALOG**
+
+![Main page](./screenshots/screenshot_main_page.png)
+
+![Article](./screenshots/screenshot_product.png)
+
+![Profile](./screenshots/screenshot_product_2.png)
+
+![Admin](./screenshots/screenshot_admin.png)
+
+![Admin 2](./screenshots/screenshot_admin_2.png)
+
 **Install:**
 1. git clone https://github.com/petrokulybaba/products_catalog.git
 2. git checkout dev
